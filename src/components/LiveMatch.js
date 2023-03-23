@@ -8,6 +8,7 @@ import Timeline from "./Timeline";
 
 import useLiveMatch from "../hooks/useLiveMatch";
 import { EVENT_TYPE_CELEBRATION } from "../config";
+import FootballAnimation from "../animation/page/FootballAnimation/FootballAnimation";
 
 const LiveMatch = ({ matchId }) => {
   const { period, score, event, timeline } = useLiveMatch(matchId);
@@ -19,6 +20,8 @@ const LiveMatch = ({ matchId }) => {
 
   return (
     <div className="live-match">
+      <FootballAnimation></FootballAnimation>
+
       {score ? <Score score={score} /> : null}
       {period ? <Period period={period} /> : null}
       {celebration ? <Celebration event={event} /> : <Court event={event} />}

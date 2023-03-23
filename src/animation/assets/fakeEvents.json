@@ -1,0 +1,63 @@
+[
+  {
+    "type": "pass",
+    "timestamp_utc": "YYY-MM-DDTHH:MM:SSZ",
+    "playerName": "Regeer",
+    "jerseyNum": "8",
+    "teamId": "123456",
+    "x": "25",
+    "y": "60",
+    "min": "12",
+    "sec": "12",
+    "outcome": true,
+    "payload":{
+      "pass":{
+        "passType" : "head",
+        "x": "50",
+        "y": "50"
+      }
+    }
+  },
+  {
+    "type": "pass",
+    "timestamp_utc": "YYY-MM-DDTHH:MM:SSZ",
+    "playerName": "Kudus",
+    "jerseyNum": "20",
+    "teamId": "123456",
+    "x": "35",
+    "y": "50",
+    "outcome": true,
+    "payload":{
+      "pass":{
+        "passType" : "head",
+        "x": "25",
+        "y": "60"
+      }
+    }
+  },
+  {
+    "type": "pass",
+    "timestamp_utc": "YYY-MM-DDTHH:MM:SSZ",
+    "playerName": "Conceição",
+    "jerseyNum": "35",
+    "teamId": "123456",
+    "x": "80",
+    "y": "40",
+    "outcome": true,
+    "payload":{
+      "pass":{
+        "passType" : "head",
+        "x": "35",
+        "y": "50"
+      },
+      "goal": {
+        "GKX" : "80",
+        "GKY" : "40",
+        "ShootY" : "12",
+        "ShootZ" : "12",
+        "playerImage": "",
+        "goalText": ""
+      }
+    }
+  }
+]

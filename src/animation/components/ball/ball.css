@@ -1,0 +1,28 @@
+.player {
+    z-index: 10;
+    width: 11px;
+    height: 11px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+
+}
+.football-ball {
+    width: 11px;
+    height: 11px;
+    z-index: 12;
+    display: block;
+    position: absolute;
+}
+.finePosition {
+    margin-left: -5px;
+    margin-top: -5px;
+}
+#ball {
+    width: 11px;
+    height: 11px;
+    display: block;
+}
+.trailpoint {
+
+}

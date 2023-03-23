@@ -1,0 +1,20 @@
+{
+  "getMatchInfo": {
+    "teamHome": {
+      "teamId": "123456",
+      "teamName": "Ajax",
+      "teamLogo": "link",
+      "teamPosition": "left",
+      "color": "FF0000",
+      "score": 0
+    },
+    "teamAway": {
+      "teamId": "789456",
+      "teamName": "Feyenoord",
+      "teamLogo": "link",
+      "teamPosition": "right",
+      "color": "0000FF",
+      "score": 0
+    }
+  }
+}
