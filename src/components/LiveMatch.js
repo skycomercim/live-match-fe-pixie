@@ -14,12 +14,13 @@ import matchFake from "../animation/assets/matchData.json";
 import anime from "animejs";
 import {fadeInBall, fadeOutBall} from "../animation/utils/animations/animationsPassage";
 import events from "../animation/assets/fakeEvents.json";
-import {createAnimationTimeline, makeAnimation} from "../animation/utils/utils";
+import {createAnimationTimeline, getRealCoordinates, makeAnimation} from "../animation/utils/utils";
 import Ball from "../animation/components/ball/ball";
 import Field from "../animation/components/field/field";
 import Scoreboard from "../animation/components/scoreboard/Scoreboard";
 import logger from "../helpers/logger";
 import {getAllTeams} from "../animation/utils/match/utilsMatch";
+import {field_height, field_width} from "../config/config";
 
 const LiveMatch = ({ matchId }) => {
   const { period, score, event, timeline } = useLiveMatch(matchId);
@@ -46,10 +47,10 @@ const LiveMatch = ({ matchId }) => {
   useEffect(() => {
       logger("event triggered LiveMatch :: ", event);
       if (event!==null) {
-          setTimeout(() => {
-              makeAnimation(event).then(r => {
-              });
-          }, 500);
+          const startRealCoordinates = getRealCoordinates(field_width, field_height, event.x, event.y);
+          // opzioni di set() per posizione iniziale
+          makeAnimation(event).then(r => {
+          });
       }
   }, [event]);
 

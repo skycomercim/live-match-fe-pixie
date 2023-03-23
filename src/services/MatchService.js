@@ -33,13 +33,13 @@ const fakeEvents = [
     "playerName": "Kudus",
     "jerseyNum": "20",
     "teamId": "123456",
-    "x": "35",
+    "x": "50",
     "y": "50",
     "outcome": true,
     "payload":{
       "pass":{
         "passType" : "head",
-        "x": "25",
+        "x": "50",
         "y": "60"
       }
     }
@@ -50,8 +50,8 @@ const fakeEvents = [
     "playerName": "Conceição",
     "jerseyNum": "35",
     "teamId": "123456",
-    "x": "80",
-    "y": "40",
+    "x": "50",
+    "y": "60",
     "outcome": true,
     "payload":{
       "pass":{
@@ -75,14 +75,14 @@ const fakeEvents = [
     "playerName": "Gullit",
     "jerseyNum": "11",
     "teamId": "789102",
-    "x": "120",
-    "y": "40",
+    "x": "35",
+    "y": "50",
     "outcome": true,
     "payload":{
       "pass":{
         "passType" : "head",
-        "x": "35",
-        "y": "50"
+        "x": "44",
+        "y": "22"
       },
       "goal": {
         "GKX" : "80",

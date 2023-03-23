@@ -3,6 +3,7 @@ import {createAndDrawAndAnimationPassage, fadeInBall, fadeOutBall} from "./anima
 import {field_height, field_width} from "../../config/config";
 import {mainAnimationEgine} from "../animationEgine/animationEngine";
 import events from "../assets/fakeEvents.json";
+import store from "../store/store";
 
 
 
@@ -26,21 +27,34 @@ function generateUniqueId() {
     return 'id-' + Math.random().toString(36).substr(2, 16);
 }
 
-async function createAnimationTimeline(timeline, event) {
+async function createAnimationTimeline(event) {
     const startRealCoordinates = getRealCoordinates(field_width, field_height, event.x, event.y);
-
+    const state = store.getState();
     if (event.type === 'pass') {
         // opzioni di set() per posizione iniziale
-        timeline
+        anime
             .set('.ballref', {
                 translateX: startRealCoordinates.x,
                 translateY: startRealCoordinates.y,
             })
     }
-
     const animation = mainAnimationEgine(event);
-    anime(animation);
-    await animation.finished;
+    if (!!animation) {
+        if (Array.isArray(animation)) {
+            const tl = anime.timeline({
+                autoplay: true
+            });
+            for (const anim of animation) {
+                tl.add(anim);
+            }
+            tl.finished.then(() => {
+                tl.destroy();
+            });
+        } else {
+            anime(animation);
+            await animation.finished;
+        }
+    }
 }
 
 /*function addRandomAnimationsWithPrevCoord(ballRef, ball, prevCoord) {
@@ -101,14 +115,7 @@ function getRealCoordinates(field_width, field_height, x_percent, y_percent) {
 
 
 async function makeAnimation(event) {
-    const newTimeline = anime.timeline({
-        autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
-    }); // creazione di una nuova istanza di anime.timeline()
-    fadeInBall();
-    await createAnimationTimeline(newTimeline, event);
-    newTimeline.finished.then(() => {
-        //fadeOutBall();
-    })
+    await createAnimationTimeline(event);
 }
 
 

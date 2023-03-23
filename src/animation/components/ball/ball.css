@@ -23,6 +23,6 @@
     height: 11px;
     display: block;
 }
-.trailpoint {
-
+.ballref {
+    opacity: 0;
 }
