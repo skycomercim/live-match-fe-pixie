@@ -20,6 +20,8 @@ function FootballAnimation() {
     const ballRef = useRef(null);
     const dispatch = useDispatch();
 
+    console.log("init");
+
 
     const [event, setEvent] = React.useState(null);
 
@@ -49,7 +51,7 @@ function FootballAnimation() {
         <Field>
             <Ball ref={ballRef}></Ball>
 
-            <svg id="soccer-svg" width="700" height="450"></svg>
+            <svg id="soccer-svg" width="400" height="250"></svg>
         </Field>
     );
 }
