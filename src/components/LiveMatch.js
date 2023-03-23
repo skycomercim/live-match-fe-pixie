@@ -29,7 +29,7 @@ const LiveMatch = ({ matchId }) => {
   const dispatch = useDispatch();
 
 
-  const [animationEnd, setAnimationEnd] = React.useState(false);
+    const [animationQueue, setAnimationQueue] = useState([]);
 
 
     useEffect( () => {
@@ -42,12 +42,14 @@ const LiveMatch = ({ matchId }) => {
         };*/
     }, []);
 
+
   useEffect(() => {
       logger("event triggered LiveMatch :: ", event);
       if (event!==null) {
-          makeAnimation(event).then(r => {
-              setAnimationEnd(true);
-          });
+          setTimeout(() => {
+              makeAnimation(event).then(r => {
+              });
+          }, 500);
       }
   }, [event]);
 

@@ -4,6 +4,8 @@ import {field_height, field_width} from "../../config/config";
 import {mainAnimationEgine} from "../animationEgine/animationEngine";
 import events from "../assets/fakeEvents.json";
 
+
+
 function randomCoordinatesMax500() {
     return {
         x: Math.floor(Math.random() * 700),
@@ -71,45 +73,6 @@ function convertAnimationInTrailNumber(animationNumber, offset) {
     return animationNumberInTrail.toString() + "px";
 }
 
-function startMatch(ball) {
-    const containerWidth = field_width;
-    const containerHeight = field_height;
-    const ballWidth = 11;
-    const ballHeight = 11;
-
-    const midFieldX = containerWidth / 2 - ballWidth / 2; // calcola la coordinata x del centro del pallone
-    const midFieldY = containerHeight / 2 - ballHeight / 2; // calcola la coordinata y del centro del pallone
-
-    let prevCoord = {
-        x: midFieldX,
-        y: midFieldY,
-    };
-
-    const timeline = anime.timeline({
-        autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
-    });
-
-    timeline
-        .set(ball, {
-            opacity: 0
-        })
-
-    timeline.add({
-        targets: ball,
-        easing: 'linear',
-        translateX: midFieldX,
-        translateY: midFieldY,
-        opacity: 0,
-        complete: () => {
-            anime({
-                targets: ball,
-                opacity: 1,
-            })
-        }
-    });
-
-    return prevCoord;
-}
 
 function convertPercentCoordinates(x_percent, y_percent) {
     // Scambia i valori delle percentuali x e y
@@ -152,4 +115,4 @@ async function makeAnimation(event) {
 
 export { randomCoordinatesMax500, randomCoordinatesArray, generateRandomCoordinates,
     convertAnimationInTrailNumber, delayer, generateUniqueId, createAnimationTimeline,
-    startMatch, getRealCoordinates, convertPercentCoordinates, makeAnimation };
+    getRealCoordinates, convertPercentCoordinates, makeAnimation };
