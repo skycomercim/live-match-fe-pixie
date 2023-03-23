@@ -18,6 +18,7 @@ import {createAnimationTimeline, makeAnimation} from "../animation/utils/utils";
 import Ball from "../animation/components/ball/ball";
 import Field from "../animation/components/field/field";
 import Scoreboard from "../animation/components/scoreboard/Scoreboard";
+import logger from "../helpers/logger";
 
 const LiveMatch = ({ matchId }) => {
   const { period, score, event, timeline } = useLiveMatch(matchId);
@@ -26,16 +27,16 @@ const LiveMatch = ({ matchId }) => {
   const ballRef = useRef(null);
   const dispatch = useDispatch();
 
-  console.log("init");
-
 
   const [eventGame, setEventGame] = React.useState(null);
 
   useEffect(() => {
       dispatch(setMatchData(matchFake));
+      logger("init LiveMatch");
   }, [])
 
   useEffect(() => {
+    logger("event triggered LiveMatch :: ",event);
     setCelebration(event && event.type === EVENT_TYPE_CELEBRATION);
     if (event!==null) {
       fadeInBall();
