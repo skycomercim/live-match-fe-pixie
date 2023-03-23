@@ -29,24 +29,24 @@ const LiveMatch = ({ matchId }) => {
   const dispatch = useDispatch();
 
 
-  const [eventGame, setEventGame] = React.useState(null);
+  const [animationEnd, setAnimationEnd] = React.useState(false);
+
+
+    useEffect( () => {
+        dispatch(setMatchData(matchFake));
+        logger("init LiveMatch");
+
+/*        window.addEventListener('click', makeAnimation);
+        return () => {
+            window.removeEventListener('click', makeAnimation);
+        };*/
+    }, []);
 
   useEffect(() => {
-      dispatch(setMatchData(matchFake));
-      logger("init LiveMatch");
-  }, [])
-
-  useEffect(() => {
-    logger("event triggered LiveMatch :: ",event);
-    setCelebration(event && event.type === EVENT_TYPE_CELEBRATION);
-    if (event!==null) {
-      fadeInBall();
-      createAnimationTimeline(event).then(r => {
-        r.finished.then(() => {
-          //fadeOutBall();
-        })
+      logger("event triggered LiveMatch :: ", event);
+      makeAnimation(event).then(r => {
+          setAnimationEnd(true);
       });
-    }
   }, [event]);
 
   return (

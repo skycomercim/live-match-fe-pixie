@@ -88,7 +88,7 @@ function createTrailCircle(uniqueId, anim) {
     trailCircle.setAttribute('cy', convertAnimationInTrailNumber(anim.animations[1].currentValue, -5));
     trailCircle.setAttribute('r', '2');
     trailCircle.setAttribute('fill', '#afc52a');
-    trailCircle.setAttribute('fill-opacity', '0.5');
+    trailCircle.setAttribute('fill-opacity', '0.8');
     svg.appendChild(trailCircle);
 
     return trailCircle;

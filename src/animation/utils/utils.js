@@ -4,11 +4,6 @@ import {field_height, field_width} from "../../config/config";
 import {mainAnimationEgine} from "../animationEgine/animationEngine";
 import events from "../assets/fakeEvents.json";
 
-
-export const timeline = anime.timeline({
-    autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
-});
-
 function randomCoordinatesMax500() {
     return {
         x: Math.floor(Math.random() * 700),
@@ -29,7 +24,7 @@ function generateUniqueId() {
     return 'id-' + Math.random().toString(36).substr(2, 16);
 }
 
-async function createAnimationTimeline(event) {
+async function createAnimationTimeline(timeline, event) {
     const newTimeline = anime.timeline({
         autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
     }); // creazione di una nuova istanza di anime.timeline()
@@ -54,7 +49,6 @@ async function createAnimationTimeline(event) {
   /*  timeline.finished.then(() => {
         timeline.reset();
     })*/
-    return timeline;
 }
 
 /*function addRandomAnimationsWithPrevCoord(ballRef, ball, prevCoord) {
@@ -157,7 +151,8 @@ async function makeAnimation(event) {
     const newTimeline = anime.timeline({
         autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
     }); // creazione di una nuova istanza di anime.timeline()
-
+    fadeInBall();
+    await createAnimationTimeline(newTimeline, event);
     newTimeline.finished.then(() => {
         //fadeOutBall();
     })
