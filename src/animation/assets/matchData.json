@@ -3,7 +3,7 @@
     "teamHome": {
       "teamId": "123456",
       "teamName": "Ajax",
-      "teamLogo": "https://aux.iconspalace.com/uploads/ajax-logo-icon-256.png",
+      "teamLogo": "",
       "teamPosition": "left",
       "color": "FF0000",
       "score": 0
@@ -11,7 +11,7 @@
     "teamAway": {
       "teamId": "789456",
       "teamName": "Feyenoord",
-      "teamLogo": "https://aux.iconspalace.com/uploads/feyenoord-logo-icon-256.png",
+      "teamLogo": "",
       "teamPosition": "right",
       "color": "0000FF",
       "score": 0
