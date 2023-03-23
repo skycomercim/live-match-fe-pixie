@@ -57,8 +57,10 @@ const LiveMatch = ({ matchId }) => {
         <svg id="soccer-svg" width="400" height="250"></svg>
       </Field>
 
-      {score ? <Score score={score} /> : null}
-      {period ? <Period period={period} /> : null}
+      <br/>
+
+     {/* {score ? <Score score={score} /> : null}
+      {period ? <Period period={period} /> : null}*/}
       {celebration ? <Celebration event={event} /> : <Court event={event} />}
       {timeline ? <Timeline timeline={timeline} /> : null}
     </div>

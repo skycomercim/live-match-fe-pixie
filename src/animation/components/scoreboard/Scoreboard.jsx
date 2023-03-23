@@ -24,7 +24,7 @@ const Scoreboard = ({ matchData, score, period }) => {
                             <img src={homeTeamLogo} alt={score?.teamHome?.teamName} />
                         </div>
                     </div>
-                    <div className="container-team-info">
+                    <div className="container-team-info" style={{ borderBottom: `2px solid ${colorTeamHome}` }}>
                         <div className="team-name">{score?.teamHome?.teamName}</div>
                         <div className="team-score">{score?.teamHome?.score}</div>
                     </div>

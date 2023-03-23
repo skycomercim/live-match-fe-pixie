@@ -123,6 +123,7 @@ class MatchService {
       this.#events.next(eventToPub);
     }, 2000);
   }
+
 }
 
 export default MatchService;
