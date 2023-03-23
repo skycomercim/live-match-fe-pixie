@@ -44,9 +44,11 @@ const LiveMatch = ({ matchId }) => {
 
   useEffect(() => {
       logger("event triggered LiveMatch :: ", event);
-      makeAnimation(event).then(r => {
-          setAnimationEnd(true);
-      });
+      if (event!==null) {
+          makeAnimation(event).then(r => {
+              setAnimationEnd(true);
+          });
+      }
   }, [event]);
 
   return (
