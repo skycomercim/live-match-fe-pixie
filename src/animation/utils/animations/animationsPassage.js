@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 import React from "react";
 import store from "../../store/store";
 import {selectMatchData} from "../../store/matchSlice";
+import logger from "../../../helpers/logger";
 
 
 
@@ -262,6 +263,10 @@ function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration =
 
 function createAndDrawAndAnimationChangeBallPossession(prevCoord, newCoord, event, duration = 1000 ) {
     const arrayAnimations = [];
+    const state = store.getState();
+    const match = selectMatchData(state);
+    const matchData = match?.getMatchInfo;
+    logger("matchData :: ", matchData);
     let player;
     arrayAnimations.push({
         targets: '.ballref',
