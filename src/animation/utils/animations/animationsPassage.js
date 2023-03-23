@@ -55,6 +55,7 @@ function fadeOutTrailPoint(trailPoint) {
     anime({
         targets: trailPoint,
         duration: 900,
+        delay: 200,
         easing: 'linear',
         opacity: 0,
         complete: function(anim) {
@@ -88,7 +89,7 @@ function createTrailCircle(uniqueId, anim) {
     trailCircle.setAttribute('cy', convertAnimationInTrailNumber(anim.animations[1].currentValue, -5));
     trailCircle.setAttribute('r', '2');
     trailCircle.setAttribute('fill', '#afc52a');
-    trailCircle.setAttribute('fill-opacity', '0.5');
+    trailCircle.setAttribute('fill-opacity', '0.8');
     svg.appendChild(trailCircle);
 
     return trailCircle;
@@ -158,7 +159,6 @@ function getColorJersey(event) {
 
 function createPlayer(anim, event, coord) {
     const svgParent = document.getElementById('soccer-svg');
-
     const colorJersey = getColorJersey(event);
     const numberJersey = event?.jerseyNum;
     const nameJersey = event?.playerName;
@@ -173,48 +173,53 @@ function createPlayer(anim, event, coord) {
     const textNameY = (parseInt(circleDimensions) + 16).toString();
 
 
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('width', svgDimensionsLargeX);
-    svg.setAttribute('height', svgDimensionsY);
-    svg.setAttribute('x', coord.x);
-    svg.setAttribute('y', coord.y);
+    const svgElement = document.getElementById(nameJersey);
+    if (!svgElement) {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', svgDimensionsLargeX);
+        svg.setAttribute('height', svgDimensionsY);
+        svg.setAttribute('x', coord.x);
+        svg.setAttribute('y', coord.y);
+        svg.setAttribute('id', nameJersey);
 
-    const centerX = parseInt(svg.getAttribute("width")) / 2;
+        const centerX = parseInt(svg.getAttribute("width")) / 2;
 
-    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    circle.setAttribute('cx', centerX);
-    circle.setAttribute('cy', circleDimensions);
-    circle.setAttribute('r', circleRadius);
-    circle.setAttribute('fill', "#"+colorJersey);
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', centerX);
+        circle.setAttribute('cy', circleDimensions);
+        circle.setAttribute('r', circleRadius);
+        circle.setAttribute('fill', "#"+colorJersey);
 
-    const textNumber = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    textNumber.setAttribute('x', centerX);
-    textNumber.setAttribute('y', textY);
-    textNumber.setAttribute('text-anchor', 'middle');
-    textNumber.setAttribute('font-size', '10');
-    textNumber.setAttribute('font-weight', 'bold');
-    textNumber.setAttribute('fill', 'white');
-    textNumber.textContent = numberJersey;
+        const textNumber = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textNumber.setAttribute('x', centerX);
+        textNumber.setAttribute('y', textY);
+        textNumber.setAttribute('text-anchor', 'middle');
+        textNumber.setAttribute('font-size', '10');
+        textNumber.setAttribute('font-weight', 'bold');
+        textNumber.setAttribute('fill', 'white');
+        textNumber.textContent = numberJersey;
 
-    const textName = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    textName.setAttribute("x", centerX);
-    textName.setAttribute(
-        "y",
-        textNameY
-    );
-    textName.setAttribute("text-anchor", "middle");
-    textName.setAttribute("font-size", "8");
-    textName.setAttribute("font-weight", "bold");
-    textName.setAttribute("fill", "white");
-    textName.textContent = nameJersey;
+        const textName = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textName.setAttribute("x", centerX);
+        textName.setAttribute(
+            "y",
+            textNameY
+        );
+        textName.setAttribute("text-anchor", "middle");
+        textName.setAttribute("font-size", "8");
+        textName.setAttribute("font-weight", "bold");
+        textName.setAttribute("fill", "white");
+        textName.textContent = nameJersey;
 
-    svg.appendChild(circle);
-    svg.appendChild(textNumber);
-    svg.appendChild(textName);
+        svg.appendChild(circle);
+        svg.appendChild(textNumber);
+        svg.appendChild(textName);
 
-    svgParent.appendChild(svg);
-
-    return svg;
+        svgParent.appendChild(svg);
+        return svg
+    } else {
+        return null;
+    }
 }
 
 
@@ -240,12 +245,19 @@ function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration =
             fadeOutTrailCircle(trail);
             //trail = createTrailLine(uniqueId, newCoord, anim);
             //createAndDrawAndAnimationPlayer(anim.animations[0].currentValue, anim.animations[1].currentValue, event?.playerName);
+            const actualCoord = {
+                x:anim.animations[0].currentValue, y:anim.animations[1].currentValue
+            }
+            const player = createPlayer(anim, event, actualCoord);
+            if (player!==null) {
+                fadeOutPlayer(player)
+            }
         },
         complete: (anim) => {
             const pointEnd = createTrailPoint(anim, newCoord);
             fadeOutTrailPoint(pointEnd);
-            const player = createPlayer(anim, event, newCoord);
-            fadeOutPlayer(player);
+            //const player = createPlayer(anim, event, newCoord);
+            //fadeOutPlayer(player);
         }
     };
 }

@@ -5,9 +5,6 @@ import {mainAnimationEgine} from "../animationEgine/animationEngine";
 import events from "../assets/fakeEvents.json";
 
 
-export const timeline = anime.timeline({
-    autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
-});
 
 function randomCoordinatesMax500() {
     return {
@@ -29,11 +26,7 @@ function generateUniqueId() {
     return 'id-' + Math.random().toString(36).substr(2, 16);
 }
 
-async function createAnimationTimeline(event) {
-    const newTimeline = anime.timeline({
-        autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
-    }); // creazione di una nuova istanza di anime.timeline()
-
+async function createAnimationTimeline(timeline, event) {
     const startRealCoordinates = getRealCoordinates(field_width, field_height, event.x, event.y);
 
     if (event.type === 'pass') {
@@ -46,15 +39,8 @@ async function createAnimationTimeline(event) {
     }
 
     const animation = mainAnimationEgine(event);
-    if (event.type === 'pass') {
-        timeline.add(animation);
-    } else {
-        timeline.add(animation);
-    }
-  /*  timeline.finished.then(() => {
-        timeline.reset();
-    })*/
-    return timeline;
+    anime(animation);
+    await animation.finished;
 }
 
 /*function addRandomAnimationsWithPrevCoord(ballRef, ball, prevCoord) {
@@ -87,45 +73,6 @@ function convertAnimationInTrailNumber(animationNumber, offset) {
     return animationNumberInTrail.toString() + "px";
 }
 
-function startMatch(ball) {
-    const containerWidth = field_width;
-    const containerHeight = field_height;
-    const ballWidth = 11;
-    const ballHeight = 11;
-
-    const midFieldX = containerWidth / 2 - ballWidth / 2; // calcola la coordinata x del centro del pallone
-    const midFieldY = containerHeight / 2 - ballHeight / 2; // calcola la coordinata y del centro del pallone
-
-    let prevCoord = {
-        x: midFieldX,
-        y: midFieldY,
-    };
-
-    const timeline = anime.timeline({
-        autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
-    });
-
-    timeline
-        .set(ball, {
-            opacity: 0
-        })
-
-    timeline.add({
-        targets: ball,
-        easing: 'linear',
-        translateX: midFieldX,
-        translateY: midFieldY,
-        opacity: 0,
-        complete: () => {
-            anime({
-                targets: ball,
-                opacity: 1,
-            })
-        }
-    });
-
-    return prevCoord;
-}
 
 function convertPercentCoordinates(x_percent, y_percent) {
     // Scambia i valori delle percentuali x e y
@@ -157,7 +104,8 @@ async function makeAnimation(event) {
     const newTimeline = anime.timeline({
         autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
     }); // creazione di una nuova istanza di anime.timeline()
-
+    fadeInBall();
+    await createAnimationTimeline(newTimeline, event);
     newTimeline.finished.then(() => {
         //fadeOutBall();
     })
@@ -167,4 +115,4 @@ async function makeAnimation(event) {
 
 export { randomCoordinatesMax500, randomCoordinatesArray, generateRandomCoordinates,
     convertAnimationInTrailNumber, delayer, generateUniqueId, createAnimationTimeline,
-    startMatch, getRealCoordinates, convertPercentCoordinates, makeAnimation };
+    getRealCoordinates, convertPercentCoordinates, makeAnimation };

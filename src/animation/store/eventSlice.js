@@ -1,21 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
-import {createAnimationTimeline} from "../utils/utils";
-import events from "../assets/fakeEvents.json";
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+import {matchSlice} from "./matchSlice";
 
-const initialState = {};
-
-const eventSlice = createSlice({
-    name: 'event',
-    initialState,
+const eventsSlice = createSlice({
+    name: 'events',
+    initialState: null,
     reducers: {
-        addEvent(state, action) {
+        setEvent: (state, action) => {
             return action.payload;
         },
-        addEventToQueue: (state, action) => {
-            state.push(action.payload);
-        }
-    }
+        clearEvent: () => {
+            return null;
+        },
+    },
 });
 
-export const { addEvent } = eventSlice.actions;
-export default eventSlice.reducer;
+export const { setEvent, clearEvent } = eventsSlice.actions;
+
+export default eventsSlice.reducer;

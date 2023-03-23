@@ -72,6 +72,31 @@ const fakeEvents = [
         "goalText": ""
       }
     }
+  },
+  {
+    "type": "pass",
+    "timestamp_utc": "YYY-MM-DDTHH:MM:SSZ",
+    "playerName": "Gullit",
+    "jerseyNum": "11",
+    "teamId": "789102",
+    "x": "120",
+    "y": "40",
+    "outcome": true,
+    "payload":{
+      "pass":{
+        "passType" : "head",
+        "x": "35",
+        "y": "50"
+      },
+      "goal": {
+        "GKX" : "80",
+        "GKY" : "40",
+        "ShootY" : "12",
+        "ShootZ" : "12",
+        "playerImage": "",
+        "goalText": ""
+      }
+    }
   }
 ];
 
@@ -80,7 +105,7 @@ const fakeInfo = {
   teamHome: {
     teamId: "123",
     teamName: "Inter",
-    teamLogo: "link",
+    teamLogo: "",
     teamPosition: "left",
     color: "FFFFF",
     score: 1
@@ -88,7 +113,7 @@ const fakeInfo = {
   teamAway: {
     teamId: "123",
     teamName: "Milan",
-    teamLogo: "link",
+    teamLogo: "",
     teamPosition: "left",
     color: "FFFFF",
     score: 0
@@ -133,6 +158,7 @@ class MatchService {
       this.#events.next(eventToPub);
     }, 2000);
   }
+
 }
 
 export default MatchService;

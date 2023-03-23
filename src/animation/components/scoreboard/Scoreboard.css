@@ -1,0 +1,93 @@
+.scoreboard-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    background-color: #333;
+    color: #fff;
+}
+
+.scoreboard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 350px;
+    height: 100%;
+    padding: 0 20px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.team {
+    display: inline-block;
+    vertical-align: middle;
+    width: 90%;
+    height: 100%;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.home-team {
+    border-right: 1px solid #555;
+}
+
+.away-team {
+    border-left: 1px solid #555;
+}
+
+.team-name {
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.team-score {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.match-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 100%;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    //border: 1px solid #555;
+    border-radius: 10px;
+    margin: 0 20px;
+}
+
+.period {
+    text-align: center;
+    padding: 3px 5px;
+}
+
+
+.container-team-logo {
+    display: inline-block;
+    position: relative;
+    width: 20%;
+}
+
+.team-logo {
+    width: 30px;
+    height: 30px;
+}
+
+.team-logo img {
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+}
+
+.container-team-info {
+    display: inline-block;
+    position: relative;
+    width: 70%;
+}
+
