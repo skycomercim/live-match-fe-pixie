@@ -1,8 +1,12 @@
+import Amplisky, { AppSyncAuthType } from "@sky-uk/ita-js-common-amplisky/lib/types/client";
+import { MATCHSERVICE_ENDPOINT, MATCHSERVICE_REALTIME, MATCHSERVICE_TOKEN } from "../config/config";
+
 import { Subject } from "rxjs";
 
 import logger from "../helpers/logger";
 
 import generateFakeMatch from "../helpers/match";
+import matchInfoQuery from "./matchInfoQuery";
 
 const m = generateFakeMatch();
 console.log(m.getInfo());
@@ -95,15 +99,21 @@ class MatchService {
   #events = new Subject();
   #fakematch;
   constructor(matchId) {
-    this._publishEvent();
-    this._generateFakeMatch();
+    this.amplisky = new Amplisky({
+      authConfig: {
+        type: AppSyncAuthType.Lambda,
+        params: {
+          authToken: MATCHSERVICE_TOKEN,
+        },
+      },
+      endpoint: MATCHSERVICE_ENDPOINT,
+      realtimeEndpoint: MATCHSERVICE_REALTIME,
+      realtime: true,
+    });
   }
 
-  async _generateFakeMatch() {
-    this.#fakematch = generateFakeMatch();
-  }
-  async getInfo() {
-    return Promise.resolve(this.#fakematch.getInfo());
+  async getInfo(matchId) {
+    return await this.amplisky.query(matchInfoQuery, {matchId});
   }
 
   subEvents(callback) {
