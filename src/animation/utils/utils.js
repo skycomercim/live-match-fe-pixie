@@ -47,9 +47,6 @@ async function createAnimationTimeline(event) {
             for (const anim of animation) {
                 tl.add(anim);
             }
-            tl.finished.then(() => {
-                tl.destroy();
-            });
         } else {
             anime(animation);
             await animation.finished;

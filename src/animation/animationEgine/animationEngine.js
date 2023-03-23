@@ -30,6 +30,7 @@ function mainAnimationEgine(event) {
                 return animation;
             break;
             case 'change_team':
+                console.log("cambio palla");
                 prevCoord = {x: event.x, y: event.y};
                 newCoord = {x: event.payload.pass.x, y: event.payload.pass.y};
                 realPrevCoordinates = getRealCoordinates(field_width, field_height, prevCoord.x, prevCoord.y);
@@ -38,8 +39,7 @@ function mainAnimationEgine(event) {
                 console.log("realNewCoordinates :: ",realNewCoordinates); // { x: 50, y: 12.5 }
                 animation = createAndDrawAndAnimationChangeBallPossession(realPrevCoordinates, realPrevCoordinates, event);
                 store.dispatch(setEvent(event));
-                fadeOutBall();
-                return [animation];
+                return animation;
                 break;
         default:
     }

@@ -282,6 +282,7 @@ function createAndDrawAndAnimationChangeBallPossession(prevCoord, newCoord, even
             if (player!==null) {
                 fadeOutPlayer(player)
             }
+            fadeOutBall();
         }
     });
     return arrayAnimations;
