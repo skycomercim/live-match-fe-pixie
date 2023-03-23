@@ -25,10 +25,6 @@ function generateUniqueId() {
 }
 
 async function createAnimationTimeline(timeline, event) {
-    const newTimeline = anime.timeline({
-        autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
-    }); // creazione di una nuova istanza di anime.timeline()
-
     const startRealCoordinates = getRealCoordinates(field_width, field_height, event.x, event.y);
 
     if (event.type === 'pass') {
@@ -41,14 +37,8 @@ async function createAnimationTimeline(timeline, event) {
     }
 
     const animation = mainAnimationEgine(event);
-    if (event.type === 'pass') {
-        timeline.add(animation);
-    } else {
-        timeline.add(animation);
-    }
-  /*  timeline.finished.then(() => {
-        timeline.reset();
-    })*/
+    anime(animation);
+    await animation.finished;
 }
 
 /*function addRandomAnimationsWithPrevCoord(ballRef, ball, prevCoord) {

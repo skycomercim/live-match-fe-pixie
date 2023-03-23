@@ -33,14 +33,14 @@ const Scoreboard = ({ matchData, score, period }) => {
                     <div className="period">{period}</div>
                 </div>
                 <div className="team away-team">
+                    <div className="container-team-info">
+                        <div className="team-name">{score?.teamAway?.teamName}</div>
+                        <div className="team-score">{score?.teamAway?.score}</div>
+                    </div>
                     <div className="container-team-logo">
                         <div className="team-logo">
                             <img src={awayTeamLogo} alt={score?.teamAway?.teamName} />
                         </div>
-                    </div>
-                    <div className="container-team-info">
-                        <div className="team-name">{score?.teamAway?.teamName}</div>
-                        <div className="team-score">{score?.teamAway?.score}</div>
                     </div>
                 </div>
             </div>
