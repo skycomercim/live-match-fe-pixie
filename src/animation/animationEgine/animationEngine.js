@@ -1,5 +1,5 @@
-import {createAndDrawAndAnimationPassage} from "./animations/animationsPassage";
-import {getRealCoordinates} from "./utils";
+import {createAndDrawAndAnimationPassage} from "../utils/animations/animationsPassage";
+import {getRealCoordinates} from "../utils/utils";
 import {field_height, field_width} from "../../config/config";
 
 function mainAnimationEgine(event) {

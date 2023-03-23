@@ -1,7 +1,8 @@
 import anime from "animejs";
-import {createAndDrawAndAnimationPassage, fadeOutBall} from "./animations/animationsPassage";
+import {createAndDrawAndAnimationPassage, fadeInBall, fadeOutBall} from "./animations/animationsPassage";
 import {field_height, field_width} from "../../config/config";
-import {mainAnimationEgine} from "./animationEngine";
+import {mainAnimationEgine} from "../animationEgine/animationEngine";
+import events from "../assets/fakeEvents.json";
 
 
 export const timeline = anime.timeline({
@@ -28,17 +29,21 @@ function generateUniqueId() {
     return 'id-' + Math.random().toString(36).substr(2, 16);
 }
 
-async function createAnimationTimeline(timeline,event) {
+async function createAnimationTimeline(event) {
+    const newTimeline = anime.timeline({
+        autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
+    }); // creazione di una nuova istanza di anime.timeline()
 
     const startRealCoordinates = getRealCoordinates(field_width, field_height, event.x, event.y);
 
-    // opzioni di set() per posizione iniziale
-    timeline
-        .set('.ballref', {
-            translateX: startRealCoordinates.x,
-            translateY: startRealCoordinates.y,
-        })
-
+    if (event.type === 'pass') {
+        // opzioni di set() per posizione iniziale
+        timeline
+            .set('.ballref', {
+                translateX: startRealCoordinates.x,
+                translateY: startRealCoordinates.y,
+            })
+    }
 
     const animation = mainAnimationEgine(event);
     if (event.type === 'pass') {
@@ -49,7 +54,7 @@ async function createAnimationTimeline(timeline,event) {
   /*  timeline.finished.then(() => {
         timeline.reset();
     })*/
-    await animation.finished;
+    return timeline;
 }
 
 /*function addRandomAnimationsWithPrevCoord(ballRef, ball, prevCoord) {
@@ -148,7 +153,18 @@ function getRealCoordinates(field_width, field_height, x_percent, y_percent) {
 }
 
 
+async function makeAnimation(event) {
+    const newTimeline = anime.timeline({
+        autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
+    }); // creazione di una nuova istanza di anime.timeline()
+
+    newTimeline.finished.then(() => {
+        //fadeOutBall();
+    })
+}
+
+
 
 export { randomCoordinatesMax500, randomCoordinatesArray, generateRandomCoordinates,
     convertAnimationInTrailNumber, delayer, generateUniqueId, createAnimationTimeline,
-    startMatch, getRealCoordinates, convertPercentCoordinates };
+    startMatch, getRealCoordinates, convertPercentCoordinates, makeAnimation };

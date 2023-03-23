@@ -9,234 +9,63 @@ console.log(m.getInfo());
 
 const fakeEvents = [
   {
-    id: "1",
-    type: "pass",
-    timestamp_utc: "YYY-MM-DDTHH:MM:SSZ",
-    playerName: "pippo",
-    jerseyNum: "11",
-    teamId: "123456",
-    x: "12",
-    y: "12",
-    min: "12",
-    sec: "12",
-    outcome: true,
-    payload: {
-      pass: {
-        passType: "head",
-        x: "12",
-        y: "12"
-      },
-      goal: {
-        GKX: "12",
-        GKY: "12",
-        ShootY: "12",
-        ShootZ: "12",
-        playerImage: "",
-        goalText: "",
-        shootType: "Tiro al volo"
+    "type": "pass",
+    "timestamp_utc": "YYY-MM-DDTHH:MM:SSZ",
+    "playerName": "Regeer",
+    "jerseyNum": "8",
+    "teamId": "123456",
+    "x": "25",
+    "y": "60",
+    "min": "12",
+    "sec": "12",
+    "outcome": true,
+    "payload":{
+      "pass":{
+        "passType" : "head",
+        "x": "50",
+        "y": "50"
       }
     }
   },
   {
-    id: "2",
-    type: "goal",
-    timestamp_utc: "YYY-MM-DDTHH:MM:SSZ",
-    playerName: "daje",
-    jerseyNum: "11",
-    teamId: "123456",
-    x: "12",
-    y: "12",
-    min: "12",
-    sec: "12",
-    outcome: true,
-    payload: {
-      pass: {
-        passType: "head",
-        x: "12",
-        y: "12"
-      },
-      goal: {
-        GKX: "12",
-        GKY: "12",
-        ShootY: "12",
-        ShootZ: "12",
-        playerImage: "",
-        goalText: "",
-        shootType: "Tiro al volo"
-      },
-      score: {
-        teamHome: {
-          teamId: "123",
-          teamName: "Inter",
-          teamLogo: "link",
-          teamPosition: "left",
-          color: "FFFFF",
-          score: 1
-        },
-        teamAway: {
-          teamId: "123",
-          teamName: "Milan",
-          teamLogo: "link",
-          teamPosition: "left",
-          color: "FFFFF",
-          score: 1
-        }
+    "type": "pass",
+    "timestamp_utc": "YYY-MM-DDTHH:MM:SSZ",
+    "playerName": "Kudus",
+    "jerseyNum": "20",
+    "teamId": "123456",
+    "x": "35",
+    "y": "50",
+    "outcome": true,
+    "payload":{
+      "pass":{
+        "passType" : "head",
+        "x": "25",
+        "y": "60"
       }
     }
   },
   {
-    id: "3",
-    type: "celebration",
-    timestamp_utc: "YYY-MM-DDTHH:MM:SSZ",
-    playerName: "pLUTO",
-    jerseyNum: "11",
-    teamId: "123456",
-    x: "12",
-    y: "12",
-    outcome: true,
-    payload: {
-      pass: {
-        passType: "head",
-        x: "12",
-        y: "12"
+    "type": "pass",
+    "timestamp_utc": "YYY-MM-DDTHH:MM:SSZ",
+    "playerName": "Conceição",
+    "jerseyNum": "35",
+    "teamId": "123456",
+    "x": "80",
+    "y": "40",
+    "outcome": true,
+    "payload":{
+      "pass":{
+        "passType" : "head",
+        "x": "35",
+        "y": "50"
       },
-      goal: {
-        GKX: "12",
-        GKY: "12",
-        ShootY: "12",
-        ShootZ: "12",
-        playerImage: "",
-        goalText: ""
-      }
-    }
-  },
-  {
-    id: "4",
-    type: "pass",
-    timestamp_utc: "YYY-MM-DDTHH:MM:SSZ",
-    playerName: "pLUTO",
-    jerseyNum: "11",
-    teamId: "123456",
-    x: "12",
-    y: "12",
-    outcome: true,
-    payload: {
-      pass: {
-        passType: "head",
-        x: "12",
-        y: "12"
-      },
-      goal: {
-        GKX: "12",
-        GKY: "12",
-        ShootY: "12",
-        ShootZ: "12",
-        playerImage: "",
-        goalText: ""
-      }
-    }
-  },
-  {
-    id: "5",
-    type: "pass",
-    timestamp_utc: "YYY-MM-DDTHH:MM:SSZ",
-    playerName: "pLUTO",
-    jerseyNum: "11",
-    teamId: "123456",
-    x: "12",
-    y: "12",
-    outcome: true,
-    payload: {
-      pass: {
-        passType: "head",
-        x: "12",
-        y: "12"
-      },
-      goal: {
-        GKX: "12",
-        GKY: "12",
-        ShootY: "12",
-        ShootZ: "12",
-        playerImage: "",
-        goalText: ""
-      }
-    }
-  },
-  {
-    id: "6",
-    type: "pass",
-    timestamp_utc: "YYY-MM-DDTHH:MM:SSZ",
-    playerName: "pLUTO",
-    jerseyNum: "11",
-    teamId: "123456",
-    x: "12",
-    y: "12",
-    outcome: true,
-    payload: {
-      pass: {
-        passType: "head",
-        x: "12",
-        y: "12"
-      },
-      goal: {
-        GKX: "12",
-        GKY: "12",
-        ShootY: "12",
-        ShootZ: "12",
-        playerImage: "",
-        goalText: ""
-      }
-    }
-  },
-  {
-    id: "7",
-    type: "red-card",
-    timestamp_utc: "YYY-MM-DDTHH:MM:SSZ",
-    playerName: "pLUTO",
-    jerseyNum: "11",
-    teamId: "123456",
-    x: "12",
-    y: "12",
-    outcome: true,
-    payload: {
-      pass: {
-        passType: "head",
-        x: "12",
-        y: "12"
-      },
-      goal: {
-        GKX: "12",
-        GKY: "12",
-        ShootY: "12",
-        ShootZ: "12",
-        playerImage: "",
-        goalText: ""
-      }
-    }
-  },
-  {
-    id: "8",
-    type: "interval",
-    timestamp_utc: "YYY-MM-DDTHH:MM:SSZ",
-    playerName: "pLUTO",
-    jerseyNum: "11",
-    teamId: "123456",
-    x: "12",
-    y: "12",
-    outcome: true,
-    payload: {
-      pass: {
-        passType: "head",
-        x: "12",
-        y: "12"
-      },
-      goal: {
-        GKX: "12",
-        GKY: "12",
-        ShootY: "12",
-        ShootZ: "12",
-        playerImage: "",
-        goalText: ""
+      "goal": {
+        "GKX" : "80",
+        "GKY" : "40",
+        "ShootY" : "12",
+        "ShootZ" : "12",
+        "playerImage": "",
+        "goalText": ""
       }
     }
   }
