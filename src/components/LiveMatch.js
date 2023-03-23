@@ -19,6 +19,7 @@ import Ball from "../animation/components/ball/ball";
 import Field from "../animation/components/field/field";
 import Scoreboard from "../animation/components/scoreboard/Scoreboard";
 import logger from "../helpers/logger";
+import {getAllTeams} from "../animation/utils/match/utilsMatch";
 
 const LiveMatch = ({ matchId }) => {
   const { period, score, event, timeline } = useLiveMatch(matchId);
@@ -50,7 +51,7 @@ const LiveMatch = ({ matchId }) => {
 
   return (
     <div className="live-match">
-      <Scoreboard score={score} period={period}></Scoreboard>
+      <Scoreboard score={score} period={period} matchData={matchFake}></Scoreboard>
       <Field>
         <Ball ref={ballRef}></Ball>
         <svg id="soccer-svg" width="400" height="250"></svg>

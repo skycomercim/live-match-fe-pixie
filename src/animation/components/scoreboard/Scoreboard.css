@@ -19,13 +19,12 @@
 }
 
 .team {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 90%;
     height: 100%;
     text-align: center;
+    padding-top: 5px;
 }
 
 .home-team {
@@ -67,3 +66,28 @@
     text-align: center;
     padding: 3px 5px;
 }
+
+
+.container-team-logo {
+    display: inline-block;
+    position: relative;
+    width: 20%;
+}
+
+.team-logo {
+    width: 30px;
+    height: 30px;
+}
+
+.team-logo img {
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+}
+
+.container-team-info {
+    display: inline-block;
+    position: relative;
+    width: 70%;
+}
+
