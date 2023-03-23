@@ -16,7 +16,6 @@ import {setMatchData} from "../../store/matchSlice";
 
 
 function FootballAnimation() {
-    const playerRef = useRef(null);
     const ballRef = useRef(null);
     const dispatch = useDispatch();
 
@@ -50,7 +49,6 @@ function FootballAnimation() {
     return (
         <Field>
             <Ball ref={ballRef}></Ball>
-
             <svg id="soccer-svg" width="400" height="250"></svg>
         </Field>
     );

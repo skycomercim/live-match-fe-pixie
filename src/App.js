@@ -8,7 +8,6 @@ export default function App() {
   return (
       <Provider store={store}>
         <div className="App">
-          <h1>Live Match</h1>
           <LiveMatch matchId={1234} />
         </div>
       </Provider>
