@@ -1,5 +1,11 @@
 import anime from "animejs";
-import {convertAnimationInTrailNumber, generateUniqueId, getRealCoordinates, timeline} from "../utils";
+import {
+    convertAnimationInTrailNumber,
+    generateUniqueId,
+    getPositionTeamInMatch,
+    getRealCoordinates,
+    timeline
+} from "../utils";
 import {field_height, field_width} from "../../../config/config";
 import ReactDOM from "react-dom";
 import React from "react";
@@ -152,7 +158,7 @@ function createTrailPoint(anim, coord) {
 
 function getColorJersey(event) {
     const matchData = selectMatchData(store.getState());
-    const color = Object.values(matchData?.getMatchInfo).find(
+    const color = Object.values(matchData).find(
         (team) => team.teamId === event.teamId
     )?.color;
     return color;
@@ -265,7 +271,7 @@ function createAndDrawAndAnimationChangeBallPossession(prevCoord, newCoord, even
     const arrayAnimations = [];
     const state = store.getState();
     const match = selectMatchData(state);
-    const matchData = match?.getMatchInfo;
+    const matchData = match;
     logger("matchData :: ", matchData);
     let player;
     arrayAnimations.push({
@@ -290,6 +296,32 @@ function createAndDrawAndAnimationChangeBallPossession(prevCoord, newCoord, even
             fadeOutBall();
         }
     });
+    // Crea il rettangolo grigio e imposta l'opacità a 0
+    const container = document.getElementById('soccer-svg');
+    const overlay = document.createElement('div');
+    overlay.style.position = 'absolute';
+    overlay.style.top = '0';
+    const position = getPositionTeamInMatch(event, matchData);
+    if (position==='left') {
+        overlay.style.left = '0';
+    } else {
+        overlay.style.right = '0';
+    }
+    overlay.style.width = '50%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(128, 128, 128, 0.7)';
+    overlay.style.opacity = '0';
+    overlay.style.zIndex = '10';
+    container.appendChild(overlay);
+
+    // Animazione per mostrare il rettangolo grigio
+    arrayAnimations.push({
+        targets: overlay,
+        opacity: 1,
+        duration: 1000, // durata in millisecondi
+        easing: 'easeInOutQuad' // tipo di easing
+    });
+
     return arrayAnimations;
 }
 

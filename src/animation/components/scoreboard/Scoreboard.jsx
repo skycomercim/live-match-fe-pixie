@@ -4,14 +4,14 @@ import {getLogoTeam} from "../../utils/match/utilsMatch";
 import teamsList from "../../assets/teamsSA.json";
 
 const Scoreboard = ({ matchData, score, period }) => {
-    const match = matchData?.getMatchInfo;
+    const match = score;
     const colorTeamHome = match?.teamHome?.color;
     const colorTeamAway = match?.teamAway?.color;
     const teams = teamsList?.teams;
     const teamHome = teams.find((team) => team.shortName === score?.teamHome?.teamName);
-    const homeTeamLogo = match?.teamHome?.teamLogo!=='' ? match?.teamHome?.teamLogo : teamHome?.crestUrl;
+    const homeTeamLogo = !!match?.teamHome?.teamLogo ? match?.teamHome?.teamLogo : teamHome?.crestUrl;
     const teamAway = teams.find((team) => team.shortName === score?.teamAway?.teamName);
-    const awayTeamLogo = match?.teamAway?.teamLogo!=='' ? match?.teamAway?.teamLogo : teamAway?.crestUrl;
+    const awayTeamLogo = !!match?.teamAway?.teamLogo ? match?.teamAway?.teamLogo : teamAway?.crestUrl;
 
     return (
         <div className="scoreboard-container">

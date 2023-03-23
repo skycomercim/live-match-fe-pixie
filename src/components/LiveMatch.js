@@ -11,15 +11,11 @@ import { EVENT_TYPE_CELEBRATION } from "../config";
 import {useDispatch} from "react-redux";
 import {setMatchData} from "../animation/store/matchSlice";
 import matchFake from "../animation/assets/matchData.json";
-import anime from "animejs";
-import {fadeInBall, fadeOutBall} from "../animation/utils/animations/animationsPassage";
-import events from "../animation/assets/fakeEvents.json";
-import {createAnimationTimeline, getRealCoordinates, makeAnimation} from "../animation/utils/utils";
+import {getRealCoordinates, makeAnimation} from "../animation/utils/utils";
 import Ball from "../animation/components/ball/ball";
 import Field from "../animation/components/field/field";
 import Scoreboard from "../animation/components/scoreboard/Scoreboard";
 import logger from "../helpers/logger";
-import {getAllTeams} from "../animation/utils/match/utilsMatch";
 import {field_height, field_width} from "../config/config";
 
 const LiveMatch = ({ matchId }) => {
@@ -29,25 +25,19 @@ const LiveMatch = ({ matchId }) => {
   const ballRef = useRef(null);
   const dispatch = useDispatch();
 
-
-    const [animationQueue, setAnimationQueue] = useState([]);
-
-
     useEffect( () => {
-        dispatch(setMatchData(matchFake));
-        logger("init LiveMatch");
+        console.log("score :: ", score);
+        if (score!==null) {
+            dispatch(setMatchData(score));
+            logger("init LiveMatch");
+        }
 
-/*        window.addEventListener('click', makeAnimation);
-        return () => {
-            window.removeEventListener('click', makeAnimation);
-        };*/
-    }, []);
+    }, [score]);
 
 
   useEffect(() => {
       logger("event triggered LiveMatch :: ", event);
       if (event!==null) {
-          const startRealCoordinates = getRealCoordinates(field_width, field_height, event.x, event.y);
           // opzioni di set() per posizione iniziale
           makeAnimation(event).then(r => {
           });
@@ -56,9 +46,9 @@ const LiveMatch = ({ matchId }) => {
 
   return (
     <div className="live-match">
-      <Scoreboard score={score} period={period} matchData={matchFake}></Scoreboard>
+      <Scoreboard score={score} period={period}></Scoreboard>
       <Field>
-        <Ball ref={ballRef}></Ball>
+          <Ball ref={ballRef}></Ball>
         <svg id="soccer-svg" width="400" height="250"></svg>
       </Field>
 

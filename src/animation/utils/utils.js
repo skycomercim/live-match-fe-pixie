@@ -110,6 +110,16 @@ function getRealCoordinates(field_width, field_height, x_percent, y_percent) {
     };
 }
 
+function getPositionTeamInMatch(event, matchData) {
+    const teamId = event.payload.teamId;
+    return matchData.teamHome.teamId === teamId
+        ? matchData.teamHome?.teamPosition
+        : matchData.teamAway.teamId === teamId
+            ? matchData.teamAway?.teamPosition
+            : null;
+}
+
+
 
 async function makeAnimation(event) {
     await createAnimationTimeline(event);
@@ -119,4 +129,4 @@ async function makeAnimation(event) {
 
 export { randomCoordinatesMax500, randomCoordinatesArray, generateRandomCoordinates,
     convertAnimationInTrailNumber, delayer, generateUniqueId, createAnimationTimeline,
-    getRealCoordinates, convertPercentCoordinates, makeAnimation };
+    getRealCoordinates, convertPercentCoordinates, makeAnimation, getPositionTeamInMatch };

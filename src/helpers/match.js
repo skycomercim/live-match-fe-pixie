@@ -5,6 +5,8 @@ import {
   MATCH_STATUS_PREMATCH,
   MATCH_STATUS_SECONDHALF
 } from "../config";
+import {setMatchData} from "../animation/store/matchSlice";
+import matchFake from "../animation/assets/matchData.json";
 
 const TEAMS = [
   { id: 1, teamName: "Atalanta" },
@@ -61,10 +63,16 @@ const generateFakeMatch = () => {
   const match = createMatch();
   match.status = MATCH_STATUS[getRandomNum(0, MATCH_STATUS.length - 1)];
   match.id = createId();
+  match.teamHome.teamId = '123456';
+  match.teamAway.teamId = '789102';
   match.teamHome.score =
     match.status !== MATCH_STATUS_PREMATCH ? getRandomNum(0, 3) : 0;
   match.teamAway.score =
     match.status !== MATCH_STATUS_PREMATCH ? getRandomNum(0, 3) : 0;
+  match.teamHome.position = 'left';
+  match.teamAway.position = 'right';
+  match.teamHome.color = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+  match.teamAway.color = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
 
   const getInfo = async () => Promise.resolve(match);
   const events = () => {};
