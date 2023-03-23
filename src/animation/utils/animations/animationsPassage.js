@@ -158,7 +158,6 @@ function getColorJersey(event) {
 
 function createPlayer(anim, event, coord) {
     const svgParent = document.getElementById('soccer-svg');
-
     const colorJersey = getColorJersey(event);
     const numberJersey = event?.jerseyNum;
     const nameJersey = event?.playerName;

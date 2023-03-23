@@ -10,7 +10,7 @@ import useLiveMatch from "../hooks/useLiveMatch";
 import { EVENT_TYPE_CELEBRATION } from "../config";
 import {useDispatch} from "react-redux";
 import {setMatchData} from "../animation/store/matchSlice";
-import match from "../animation/assets/matchData.json";
+import matchFake from "../animation/assets/matchData.json";
 import anime from "animejs";
 import {fadeInBall, fadeOutBall} from "../animation/utils/animations/animationsPassage";
 import events from "../animation/assets/fakeEvents.json";
@@ -32,8 +32,11 @@ const LiveMatch = ({ matchId }) => {
   const [eventGame, setEventGame] = React.useState(null);
 
   useEffect(() => {
+      dispatch(setMatchData(matchFake));
+  }, [])
+
+  useEffect(() => {
     setCelebration(event && event.type === EVENT_TYPE_CELEBRATION);
-    dispatch(setMatchData(match));
     if (event!==null) {
       fadeInBall();
       createAnimationTimeline(event).then(r => {
@@ -46,7 +49,7 @@ const LiveMatch = ({ matchId }) => {
 
   return (
     <div className="live-match">
-      <Scoreboard></Scoreboard>
+      <Scoreboard score={score} period={period}></Scoreboard>
       <Field>
         <Ball ref={ballRef}></Ball>
         <svg id="soccer-svg" width="400" height="250"></svg>
