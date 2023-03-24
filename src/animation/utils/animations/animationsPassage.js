@@ -163,9 +163,12 @@ function createTrailPoint(anim, coord) {
 
 function getColorJersey(event) {
     const matchData = selectMatchData(store.getState());
-    const color = Object.values(matchData).find(
+    let color = Object.values(matchData).find(
         (team) => team.teamId === event.teamId
     )?.color;
+    if (!color.startsWith("#")) {
+        color = "#" + color;
+    }
     return color;
 }
 
@@ -177,7 +180,7 @@ function createPlayer(anim, event, coord) {
     const svgDimensionJersey = '22';
 
     const svgDimensions = svgDimensionJersey;
-    const svgDimensionsLargeX = (parseInt(svgDimensions) + 30).toString();
+    const svgDimensionsLargeX = (parseInt(svgDimensions) + 40).toString();
     const svgDimensionsY = (parseInt(svgDimensions) + 10).toString();
     const circleDimensions = (parseInt(svgDimensions)/2).toString();
     const circleRadius = (parseInt(circleDimensions) - 2).toString();
@@ -271,7 +274,7 @@ function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration =
             const pointEnd = createTrailPoint(anim, newCoord);
             fadeOutTrailPoint(pointEnd);
             if (player!==null) {
-                fadeOutPlayer(player)
+                //fadeOutPlayer(player)
             }
         }
     };
