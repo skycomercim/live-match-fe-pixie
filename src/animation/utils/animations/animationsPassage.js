@@ -75,7 +75,7 @@ function fadeOutPlayer(player, flagFast) {
     let duration = 1000;
     let delay = 1000;
     if (!!flagFast) {
-        delay = 1000;
+        delay = 800;
     }
     const svg = document.getElementById('soccer-svg');
     anime({
