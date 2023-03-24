@@ -1,7 +1,7 @@
 import anime from "animejs";
 import {
     convertAnimationInTrailNumber,
-    generateUniqueId,
+    generateUniqueId, getCorrectColorCode,
     getPositionTeamInMatch,
     getRealCoordinates,
     timeline
@@ -166,10 +166,7 @@ function getColorJersey(event) {
     let color = Object.values(matchData).find(
         (team) => team.teamId === event.teamId
     )?.color;
-    if (!color.startsWith("#")) {
-        color = "#" + color;
-    }
-    return color;
+    return getCorrectColorCode(color);
 }
 
 function createPlayer(anim, event, coord) {
@@ -265,10 +262,6 @@ function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration =
             const actualCoord = {
                 x:anim.animations[0].currentValue, y:anim.animations[1].currentValue
             }
-   /*         const player = createPlayer(anim, event, actualCoord);
-            if (player!==null) {
-                fadeOutPlayer(player)
-            }*/
         },
         complete: (anim) => {
             const pointEnd = createTrailPoint(anim, newCoord);

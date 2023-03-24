@@ -1,4 +1,4 @@
-import {getPositionTeamInMatch, getTeamInMatch} from "../utils";
+import {getCorrectColorCode, getPositionTeamInMatch, getTeamInMatch} from "../utils";
 
 
 const API_KEY = '008792446213484194c64e9066ecede9';
@@ -78,9 +78,9 @@ function getOverlayChangeBall(event, matchData) {
     logo.style.verticalAlign = 'middle';
     logo.style.marginRight = '12px';
     if (team?.teamPosition === 'left') {
-        logo.style.borderRight = `2px solid ${team?.color}`;
+        logo.style.borderRight = `2px solid #fff`;
     } else {
-        logo.style.borderLeft = `2px solid ${team?.color}`;
+        logo.style.borderLeft = `2px solid #fff`;
     }
 
 
@@ -104,7 +104,7 @@ function getOverlayChangeBall(event, matchData) {
     playerNameEl.style.lineHeight = '20px';
     playerNameEl.style.marginBlockStart = '0 !important';
     playerNameEl.style.marginBlockEnd = '0 !important';
-    playerNameEl.style.borderBottom = `2px solid ${team?.color}`;
+    playerNameEl.style.borderBottom = `2px solid ${getCorrectColorCode(team?.color)}`;
     playerNameEl.style.textAlign = textAlign;
 
     if (team?.teamPosition === 'right') {
