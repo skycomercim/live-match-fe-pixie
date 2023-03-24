@@ -98,7 +98,7 @@ function getRealCoordinates(fieldWidth, fieldHeight, x_percent, y_percent) {
         offsetX = -offsetX;
     }
     if (y_percent > 50) {
-        offsetY = 10;
+        offsetY = -10;
     }
 
     // Calcola le coordinate reali basandosi sulle percentuali, le dimensioni del campo e l'offset della cornice
