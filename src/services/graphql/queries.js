@@ -5,6 +5,7 @@ export const matchInfoQuery = `query MatchInfoQuery($matchId: ID!) {
       matchId
       seasonId
       seasonName
+      status
       teamHome {
         color
         score

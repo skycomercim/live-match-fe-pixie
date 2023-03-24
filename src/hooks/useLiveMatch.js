@@ -38,6 +38,8 @@ const useLiveMatch = (matchId) => {
   const [timeline, addMainEventToTimeline] = useState([]);
   const eventsSubscription = useRef();
 
+  const [nextEvent, setNextEvent] = useState();
+
   const { event, addEvents } = useEventsDispatcher();
 
   useEffect(() => {
@@ -81,7 +83,7 @@ const useLiveMatch = (matchId) => {
     if (event) {
       mainEventTypes.includes(event.type) &&
         addMainEventToTimeline((state) => [...state, event]);
-      setEvent(event);
+        setNextEvent(event);
       event.type in periodMap && setPeriod(periodMap[event.type]);
       // TODO: come gestiamo il goal? Dove trovo lo score aggiornato, sotto payload.score o payload.match?
       event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
@@ -91,7 +93,7 @@ const useLiveMatch = (matchId) => {
   return {
     period,
     score,
-    event,
+    event: nextEvent,
     timeline
   };
 };
