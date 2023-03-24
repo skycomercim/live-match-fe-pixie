@@ -35,3 +35,20 @@ code {
   font-family: sans-serif;
   text-align: center;
 }
+
+.cronaca{
+  list-style: none;
+  text-align: left;
+}
+
+.cronaca .cronaca-goal{
+  background: darkgreen;
+  color: white;
+}
+
+.cronaca li{
+  display: block;
+  background: #dfdfdf;
+  margin-bottom: 5px;
+  padding: 5px;
+}

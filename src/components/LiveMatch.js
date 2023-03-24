@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 
 import Timeline from "./Timeline";
+import Cronaca from "./Cronaca";
 
 import useLiveMatch from "../hooks/useLiveMatch";
 import { useDispatch } from "react-redux";
@@ -14,7 +15,7 @@ import Goal from "../animation/components/goal/Goal";
 import { getTypeEvent } from "../animation/utils/match/utilsMatch";
 
 const LiveMatch = ({ matchId }) => {
-    const { period, score, event, timeline } = useLiveMatch(matchId);
+    const { period, score, event, timeline, cronaca } = useLiveMatch(matchId);
     const [celebration, setCelebration] = useState(false);
     const [typeEvent, setTypeEvent] = useState(null);
     const [scoreData, setScoreData] = useState(score);
@@ -50,6 +51,7 @@ const LiveMatch = ({ matchId }) => {
 
     return (
         <div className="live-match">
+            
             <Field className={"container-element-live-match"}>
                 <Ball ref={ballRef}></Ball>
                 <svg id="soccer-svg" width="400" height="250"></svg>
@@ -57,11 +59,14 @@ const LiveMatch = ({ matchId }) => {
             <Scoreboard score={scoreData} period={period} className={"container-element-live-match"}></Scoreboard>
             <Goal typeEvent={typeEvent}></Goal>
             <br/>
-
+        
             {/* {score ? <Score score={score} /> : null}
       {period ? <Period period={period} /> : null}*/}
             {/*{celebration ? <Celebration event={event} /> : <Court event={event} />}*/}
+            
+            {cronaca ? <Cronaca cronaca={cronaca} /> : null}
             {timeline ? <Timeline timeline={timeline} /> : null}
+            
         </div>
     );
 };
