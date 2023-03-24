@@ -1,4 +1,4 @@
-export default `query MatchInfoQuery($matchId: ID!) {
+export const matchInfoQuery = `query MatchInfoQuery($matchId: ID!) {
     getMatchInfo(matchId: $matchId) {
       competitionId
       date

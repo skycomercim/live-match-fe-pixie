@@ -4,7 +4,7 @@ import anime from 'animejs/lib/anime.es.js';
 const Goal = ({ typeEvent}) => {
     const imageRef = useRef(null);
     const textRef = useRef(null);
-    console.log("Goal typeEvent :: ", typeEvent);
+    // console.log("Goal typeEvent :: ", typeEvent);
 
     useEffect(() => {
         // Verifica se il tipo di evento è "change-ball"
