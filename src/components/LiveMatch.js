@@ -32,8 +32,8 @@ const LiveMatch = ({ matchId }) => {
     }, [score]);
 
     useEffect(() => {
+        logger("event triggered LiveMatch :: ", event);
         (async () => {
-            logger("event triggered LiveMatch :: ", event);
             if(event) {
                 setTypeEvent(getTypeEvent(event));
                 // opzioni di set() per posizione iniziale
