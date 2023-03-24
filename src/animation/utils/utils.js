@@ -88,23 +88,11 @@ function convertAnimationInTrailNumber(animationNumber, offset) {
 }
 
 
-function convertPercentCoordinates(x_percent, y_percent) {
-    // Scambia i valori delle percentuali x e y
-    const new_x_percent = y_percent;
-    const new_y_percent = x_percent;
 
-    // Restituisce le nuove coordinate percentuali come un oggetto
-    return {
-        x: new_x_percent,
-        y: new_y_percent
-    };
-}
-
-function getRealCoordinates(field_width, field_height, x_percent, y_percent) {
-    const percentCoordinates_vertical = convertPercentCoordinates(x_percent, y_percent);
-    // Calcola le coordinate reali
-    const x_real = (field_width * percentCoordinates_vertical.x) / 100;
-    const y_real = (field_height * percentCoordinates_vertical.y) / 100;
+function getRealCoordinates(fieldWidth, fieldHeight, x_percent, y_percent) {
+    // Calcola le coordinate reali basandosi sulle percentuali e le dimensioni del campo
+    const x_real = fieldWidth * x_percent / 100;
+    const y_real = fieldHeight * (1 - y_percent / 100);
 
     // Restituisce le coordinate reali come un oggetto
     return {
@@ -134,4 +122,4 @@ async function makeAnimation(event) {
 
 export { randomCoordinatesMax500, randomCoordinatesArray, generateRandomCoordinates,
     convertAnimationInTrailNumber, delayer, generateUniqueId, createAnimationTimeline,
-    getRealCoordinates, convertPercentCoordinates, makeAnimation, getTeamInMatch };
+    getRealCoordinates, makeAnimation, getTeamInMatch };
