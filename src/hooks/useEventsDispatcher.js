@@ -1,29 +1,43 @@
 import { useRef, useState, useEffect } from "react"
+import logger from "../helpers/logger";
 
 const useEventsDispatcher = () => {
 
     const eventsRef = useRef([]);
     const [event, setEvent] = useState();
-    const lastEventDate = useRef(new Date());
+    const lastEventDate = useRef();
     const timeoutId = useRef();
 
     const eventDispatcher = () => {
         const events = eventsRef.current;
 
         if (events.length > 0) {
-            const nextEvent = eventsRef.current.shift();
+            const nextEvent = events.shift();
             const { timestamp_utc } = nextEvent;
             const nextEventDate = new Date(timestamp_utc);
+
+            let timeout = lastEventDate.current? nextEventDate.getTime() - lastEventDate.current.getTime(): 0;
+            
+            logger('[useEventsDispatcher]', 'lastEventDate', lastEventDate.current);
+            logger('[useEventsDispatcher]', 'nextEventDate', nextEventDate);
+            logger('[useEventsDispatcher]', 'timeout', timeout);
+
             timeoutId.current = setTimeout(() => {
+                logger('[useEventsDispatcher]', 'next event', nextEvent)
                 setEvent(nextEvent);
                 lastEventDate.current = nextEventDate;
                 eventDispatcher();
-            }, (nextEventDate.getTime() - lastEventDate.getTime()))
+            }, 1000);
         }
         else {
             timeoutId.current = setTimeout(() => {
+                logger('[useEventsDispatcher]', 'check', eventsRef.current?.length);
                 eventDispatcher();
-            }, 100);
+            }, 200);
+        }
+
+        return () => {
+            clearTimeout(timeoutId.current);
         }
     }
 
@@ -33,7 +47,10 @@ const useEventsDispatcher = () => {
 
     return {
         event,
-        addEvents: (events) => eventsRef.current.push(...events)
+        addEvents: (events) => {
+            logger('[useEventsDispatcher]', 'new events', events);
+            eventsRef.current.push(...events);
+        }
     }
 };
 
