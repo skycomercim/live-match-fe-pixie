@@ -7,16 +7,13 @@ import Celebration from "./Celebration";
 import Timeline from "./Timeline";
 
 import useLiveMatch from "../hooks/useLiveMatch";
-import { EVENT_TYPE_CELEBRATION } from "../config";
 import { useDispatch } from "react-redux";
 import { setMatchData } from "../animation/store/matchSlice";
-import matchFake from "../animation/assets/matchData.json";
-import { getPositionTeamInMatch, getRealCoordinates, makeAnimation } from "../animation/utils/utils";
+import { makeAnimation } from "../animation/utils/utils";
 import Ball from "../animation/components/ball/ball";
 import Field from "../animation/components/field/field";
 import Scoreboard from "../animation/components/scoreboard/Scoreboard";
 import logger from "../helpers/logger";
-import { field_height, field_width } from "../config/config";
 import Goal from "../animation/components/goal/Goal";
 import { getTypeEvent } from "../animation/utils/match/utilsMatch";
 
@@ -29,7 +26,7 @@ const LiveMatch = ({ matchId }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    score && dispatch(setMatchData(score));
+    !!score && dispatch(setMatchData(score));
   }, [score]);
 
   useEffect(() => {
