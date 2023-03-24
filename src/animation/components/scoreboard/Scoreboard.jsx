@@ -1,17 +1,14 @@
 import React from 'react';
 import './Scoreboard.css';
-import {getLogoTeam} from "../../utils/match/utilsMatch";
+import {getLogoTeam, getTeamLogoFromDataOrFetch} from "../../utils/match/utilsMatch";
 import teamsList from "../../assets/teamsSA.json";
 
 const Scoreboard = ({ matchData, score, period }) => {
     const match = score;
     const colorTeamHome = match?.teamHome?.color;
     const colorTeamAway = match?.teamAway?.color;
-    const teams = teamsList?.teams;
-    const teamHome = teams.find((team) => team.shortName === score?.teamHome?.teamName);
-    const homeTeamLogo = !!match?.teamHome?.teamLogo ? match?.teamHome?.teamLogo : teamHome?.crestUrl;
-    const teamAway = teams.find((team) => team.shortName === score?.teamAway?.teamName);
-    const awayTeamLogo = !!match?.teamAway?.teamLogo ? match?.teamAway?.teamLogo : teamAway?.crestUrl;
+    const homeTeamLogo = getTeamLogoFromDataOrFetch(score?.teamHome);
+    const awayTeamLogo = getTeamLogoFromDataOrFetch(score?.teamAway);
 
     return (
         <div className="scoreboard-container">

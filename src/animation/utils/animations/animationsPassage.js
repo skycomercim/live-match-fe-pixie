@@ -12,6 +12,7 @@ import React from "react";
 import store from "../../store/store";
 import {selectMatchData} from "../../store/matchSlice";
 import logger from "../../../helpers/logger";
+import {getOverlayChangeBall} from "../match/utilsMatch";
 
 
 
@@ -297,28 +298,24 @@ function createAndDrawAndAnimationChangeBallPossession(prevCoord, newCoord, even
         }
     });
     // Crea il rettangolo grigio e imposta l'opacità a 0
-    const container = document.getElementById('soccer-svg');
-    const overlay = document.createElement('div');
-    overlay.style.position = 'absolute';
-    overlay.style.top = '0';
-    const position = getPositionTeamInMatch(event, matchData);
-    if (position==='left') {
-        overlay.style.left = '0';
-    } else {
-        overlay.style.right = '0';
-    }
-    overlay.style.width = '50%';
-    overlay.style.height = '100%';
-    overlay.style.backgroundColor = 'rgba(128, 128, 128, 0.7)';
-    overlay.style.opacity = '0';
-    overlay.style.zIndex = '10';
+    const container = document.querySelector('.field-container');
+    const overlay = getOverlayChangeBall(event, matchData);
+    logger("overlay :: ", overlay);
     container.appendChild(overlay);
 
     // Animazione per mostrare il rettangolo grigio
     arrayAnimations.push({
         targets: overlay,
         opacity: 1,
-        duration: 1000, // durata in millisecondi
+        duration: 500, // durata in millisecondi
+        easing: 'easeInOutQuad' // tipo di easing
+    });
+
+    arrayAnimations.push({
+        targets: overlay,
+        opacity: 0,
+        delay: 2000,
+        duration: 700, // durata in millisecondi
         easing: 'easeInOutQuad' // tipo di easing
     });
 

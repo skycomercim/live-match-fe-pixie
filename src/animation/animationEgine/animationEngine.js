@@ -15,7 +15,7 @@ function mainAnimationEgine(event) {
     let typeEvent = event.type;
     const state = store.getState();
     if (event.type === 'pass' && state.event && (state.event.teamId !== event.teamId)) {
-        typeEvent = 'change_team';
+        typeEvent = 'change_ball_team';
     }
     switch (typeEvent) {
         case 'pass':
@@ -28,9 +28,12 @@ function mainAnimationEgine(event) {
                 logger("realNewCoordinates :: ",realNewCoordinates); // { x: 50, y: 12.5 }
                 animation = createAndDrawAndAnimationPassage(realPrevCoordinates, realNewCoordinates, event);
                 store.dispatch(setEvent(event));
-                return animation;
+                return {
+                    animation: animation,
+                    type: 'pass'
+                };
             break;
-            case 'change_team':
+            case 'change_ball_team':
                 logger("cambio palla");
                 prevCoord = {x: event.x, y: event.y};
                 newCoord = {x: event.payload.pass.x, y: event.payload.pass.y};
@@ -40,7 +43,10 @@ function mainAnimationEgine(event) {
                 logger("realNewCoordinates :: ",realNewCoordinates); // { x: 50, y: 12.5 }
                 animation = createAndDrawAndAnimationChangeBallPossession(realPrevCoordinates, realPrevCoordinates, event);
                 store.dispatch(setEvent(event));
-                return animation;
+                return {
+                    animation: animation,
+                    type: 'change_ball_team'
+                };
                 break;
         default:
     }

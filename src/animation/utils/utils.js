@@ -38,19 +38,20 @@ async function createAnimationTimeline(event) {
                 translateY: startRealCoordinates.y,
             })
     }
-    const animation = mainAnimationEgine(event);
-    if (!!animation) {
-        if (Array.isArray(animation)) {
+    const response = mainAnimationEgine(event);
+    if (!!response?.animation) {
+        if (Array.isArray(response?.animation)) {
             const tl = anime.timeline({
                 autoplay: true
             });
-            for (const anim of animation) {
+            for (const anim of response?.animation) {
                 tl.add(anim);
             }
         } else {
-            anime(animation);
-            await animation.finished;
+            anime(response?.animation);
+            await response?.animation.finished;
         }
+        return response?.type
     }
 }
 
@@ -110,23 +111,25 @@ function getRealCoordinates(field_width, field_height, x_percent, y_percent) {
     };
 }
 
-function getPositionTeamInMatch(event, matchData) {
-    const teamId = event.payload.teamId;
-    return matchData.teamHome.teamId === teamId
-        ? matchData.teamHome?.teamPosition
+function getTeamInMatch(event, matchData) {
+    const teamId = event.teamId;
+    const position = matchData.teamHome.teamId === teamId
+        ? matchData.teamHome
         : matchData.teamAway.teamId === teamId
-            ? matchData.teamAway?.teamPosition
+            ? matchData.teamAway
             : null;
+    return position;
 }
 
 
 
 async function makeAnimation(event) {
-    await createAnimationTimeline(event);
+    const response = await createAnimationTimeline(event);
+    return response;
 }
 
 
 
 export { randomCoordinatesMax500, randomCoordinatesArray, generateRandomCoordinates,
     convertAnimationInTrailNumber, delayer, generateUniqueId, createAnimationTimeline,
-    getRealCoordinates, convertPercentCoordinates, makeAnimation, getPositionTeamInMatch };
+    getRealCoordinates, convertPercentCoordinates, makeAnimation, getTeamInMatch };

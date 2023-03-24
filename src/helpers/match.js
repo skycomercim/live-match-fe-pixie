@@ -69,8 +69,8 @@ const generateFakeMatch = () => {
     match.status !== MATCH_STATUS_PREMATCH ? getRandomNum(0, 3) : 0;
   match.teamAway.score =
     match.status !== MATCH_STATUS_PREMATCH ? getRandomNum(0, 3) : 0;
-  match.teamHome.position = 'left';
-  match.teamAway.position = 'right';
+  match.teamHome.teamPosition = 'left';
+  match.teamAway.teamPosition = 'right';
   match.teamHome.color = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
   match.teamAway.color = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
 

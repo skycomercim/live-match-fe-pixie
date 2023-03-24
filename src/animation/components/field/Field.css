@@ -4,3 +4,13 @@
     display: block;
     position: relative;
 }
+
+.changeBallContainer.right img {
+    border-left: 2px solid white;
+    padding: 0 0 0 8px;
+}
+
+.changeBallContainer.left img{
+    border-right: 2px solid white;
+    padding: 0 8px 0 0;
+}
