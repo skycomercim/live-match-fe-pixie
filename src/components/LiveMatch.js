@@ -21,12 +21,18 @@ const LiveMatch = ({ matchId }) => {
   const { period, score, event, timeline } = useLiveMatch(matchId);
   const [celebration, setCelebration] = useState(false);
   const [typeEvent, setTypeEvent] = useState(null);
+  const [scoreData, setScoreData] = useState(score);
 
   const ballRef = useRef(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    !!score && dispatch(setMatchData(score));
+    logger("LiveMatch score :: ", score);
+    if (typeof score!=='undefined' && score!==undefined) {
+      logger("LiveMatch enter for setting score to redux");
+      setScoreData(score);
+      dispatch(setMatchData(score));
+    }
   }, [score]);
 
   useEffect(() => {
@@ -52,7 +58,7 @@ const LiveMatch = ({ matchId }) => {
           <Ball ref={ballRef}></Ball>
         <svg id="soccer-svg" width="400" height="250"></svg>
       </Field>
-        <Scoreboard score={score} period={period} className={"container-element-live-match"}></Scoreboard>
+        <Scoreboard score={scoreData} period={period} className={"container-element-live-match"}></Scoreboard>
       <Goal typeEvent={typeEvent}></Goal>
       <br/>
 
