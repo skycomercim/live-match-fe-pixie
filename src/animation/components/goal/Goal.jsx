@@ -7,7 +7,7 @@ const Goal = ({ typeEvent}) => {
     // console.log("Goal typeEvent :: ", typeEvent);
 
     useEffect(() => {
-        // Verifica se il tipo di evento è "change-ball"
+        // Verifica se il tipo di evento è "goal"
         if (typeEvent !== 'goal') {
             return;
         }
@@ -42,16 +42,24 @@ const Goal = ({ typeEvent}) => {
         // Esegui l'animazione al caricamento del componente
         fadeInAnimation.play();
 
+        // Interrompi tutte le animazioni e rendi invisibili gli elementi dopo 5 secondi
+        setTimeout(() => {
+            fadeInAnimation.pause();
+            fadeOutAnimation.pause();
+            anime.set([imageRef.current, textRef.current], { opacity: 0 });
+        }, 5000)
+
         // Rimuovi l'animazione quando il componente viene smontato
         return () => {
             fadeInAnimation.pause();
-            //fadeOutAnimation.pause();
+            fadeOutAnimation.pause();
         };
     }, [typeEvent]);
 
 
+
     return (
-        <div style={{ position: 'absolute', width: '100%', height: '100%', zIndex: '20', left: '0', top: '50px' }}>
+        <div style={{ position: 'absolute', width: '100%', height: '100%', zIndex: '20', left: '0', top: '0px' }}>
             <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                 <img
                     ref={imageRef}

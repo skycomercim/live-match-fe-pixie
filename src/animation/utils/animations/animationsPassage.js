@@ -6,7 +6,7 @@ import {
     getRealCoordinates,
     timeline
 } from "../utils";
-import {field_height, field_width} from "../../../config/config";
+import {durationAnimationFast, durationAnimationStandard, field_height, field_width} from "../../../config/config";
 import ReactDOM from "react-dom";
 import React from "react";
 import store from "../../store/store";
@@ -72,12 +72,17 @@ function fadeOutTrailPoint(trailPoint) {
     });
 }
 
-function fadeOutPlayer(player) {
+function fadeOutPlayer(player, flagFast) {
+    let duration = 1000;
+    let delay = 2000;
+    if (!!flagFast) {
+        delay = 1000;
+    }
     const svg = document.getElementById('soccer-svg');
     anime({
         targets: player,
-        duration: 1000,
-        delay: 2000,
+        duration: duration,
+        delay: delay,
         easing: 'linear',
         opacity: 0,
         complete: function(anim) {
@@ -191,15 +196,16 @@ function createPlayer(anim, event, coord) {
         svg.setAttribute('id', nameJersey);
 
         const centerX = parseInt(svg.getAttribute("width")) / 2;
+        const centerXString = centerX.toString(); // Aggiunto: conversione del centerX in stringa
 
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('cx', centerX);
+        circle.setAttribute('cx', centerXString);
         circle.setAttribute('cy', circleDimensions);
         circle.setAttribute('r', circleRadius);
         circle.setAttribute('fill', colorJersey);
 
         const textNumber = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        textNumber.setAttribute('x', centerX);
+        textNumber.setAttribute('x', centerXString);
         textNumber.setAttribute('y', textY);
         textNumber.setAttribute('text-anchor', 'middle');
         textNumber.setAttribute('font-size', '10');
@@ -208,7 +214,7 @@ function createPlayer(anim, event, coord) {
         textNumber.textContent = numberJersey;
 
         const textName = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        textName.setAttribute("x", centerX);
+        textName.setAttribute("x", centerXString);
         textName.setAttribute(
             "y",
             textNameY
@@ -231,7 +237,7 @@ function createPlayer(anim, event, coord) {
 }
 
 
-function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration = 1000 ) {
+function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration = durationAnimationStandard ) {
     let trail, player;
     return{
         targets: '.ballref',
@@ -268,7 +274,7 @@ function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration =
     };
 }
 
-function createAndDrawAndAnimationChangeBallPossession(prevCoord, newCoord, event, duration = 1000 ) {
+function createAndDrawAndAnimationChangeBallPossession(prevCoord, newCoord, event, duration = durationAnimationFast ) {
     const arrayAnimations = [];
     const state = store.getState();
     const match = selectMatchData(state);
@@ -292,7 +298,7 @@ function createAndDrawAndAnimationChangeBallPossession(prevCoord, newCoord, even
         },
         complete: (anim) => {
             if (player!==null) {
-                fadeOutPlayer(player)
+                fadeOutPlayer(player, true)
             }
             fadeOutBall();
         }

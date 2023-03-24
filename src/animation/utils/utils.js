@@ -63,21 +63,6 @@ async function createAnimationTimeline(event) {
     return newCoord;
 }*/
 
-function generateRandomCoordinates(prevCoord) {
-    const maxX = 400;
-    const maxY = 300;
-
-    const xRange = Math.min(maxX, prevCoord.x + 101) - Math.max(0, prevCoord.x - 100);
-    const yRange = Math.min(maxY, prevCoord.y + 101) - Math.max(0, prevCoord.y - 100);
-
-    const x = Math.floor(Math.random() * xRange) + Math.max(0, prevCoord.x - 100);
-    const y = Math.floor(Math.random() * yRange) + Math.max(0, prevCoord.y - 100);
-
-    return {
-        x: x,
-        y: y
-    };
-}
 
 function convertAnimationInTrailNumber(animationNumber, offset) {
     const animationSPlit = animationNumber.split('px');
@@ -88,23 +73,22 @@ function convertAnimationInTrailNumber(animationNumber, offset) {
 }
 
 
-function convertPercentCoordinates(x_percent, y_percent) {
-    // Scambia i valori delle percentuali x e y
-    const new_x_percent = y_percent;
-    const new_y_percent = x_percent;
 
-    // Restituisce le nuove coordinate percentuali come un oggetto
-    return {
-        x: new_x_percent,
-        y: new_y_percent
-    };
-}
+function getRealCoordinates(fieldWidth, fieldHeight, x_percent, y_percent) {
+    // Calcola le coordinate reali basandosi sulle percentuali e le dimensioni del campo
+    let offsetX = 0; // Offset a destra e sinistra
+    let offsetY = 0; // Offset in alto e basso
 
-function getRealCoordinates(field_width, field_height, x_percent, y_percent) {
-    const percentCoordinates_vertical = convertPercentCoordinates(x_percent, y_percent);
-    // Calcola le coordinate reali
-    const x_real = (field_width * percentCoordinates_vertical.x) / 100;
-    const y_real = (field_height * percentCoordinates_vertical.y) / 100;
+    if (x_percent > 95) {
+        offsetX = -15;
+    }
+    if (y_percent > 95) {
+        offsetY = -15;
+    }
+
+    // Calcola le coordinate reali basandosi sulle percentuali, le dimensioni del campo e l'offset della cornice
+    const x_real = fieldWidth * x_percent / 100 + offsetX;
+    const y_real = fieldHeight * (1 - y_percent / 100) + offsetY;
 
     // Restituisce le coordinate reali come un oggetto
     return {
@@ -132,6 +116,6 @@ async function makeAnimation(event) {
 
 
 
-export { randomCoordinatesMax500, randomCoordinatesArray, generateRandomCoordinates,
+export { randomCoordinatesMax500, randomCoordinatesArray,
     convertAnimationInTrailNumber, delayer, generateUniqueId, createAnimationTimeline,
-    getRealCoordinates, convertPercentCoordinates, makeAnimation, getTeamInMatch };
+    getRealCoordinates, makeAnimation, getTeamInMatch };
