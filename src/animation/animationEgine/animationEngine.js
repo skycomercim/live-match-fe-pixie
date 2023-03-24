@@ -9,14 +9,12 @@ import {field_height, field_width} from "../../config/config";
 import store from "../store/store";
 import {setEvent} from "../store/eventSlice";
 import logger from "../../helpers/logger";
+import {getTypeEvent} from "../utils/match/utilsMatch";
 
 function mainAnimationEgine(event) {
     let newCoord, prevCoord, animation, realPrevCoordinates, realNewCoordinates;
-    let typeEvent = event.type;
-    const state = store.getState();
-    if (event.type === 'pass' && state.event && (state.event.teamId !== event.teamId)) {
-        typeEvent = 'change_ball_team';
-    }
+    let typeEvent = getTypeEvent(event);
+
     switch (typeEvent) {
         case 'pass':
             fadeInBall();

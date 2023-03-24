@@ -6,6 +6,7 @@ const API_URL = 'https://api.football-data.org/v2';
 
 import axios from 'axios';
 import teamsList from "../../assets/teamsSA.json";
+import store from "../../store/store";
 
 async function getAllTeams() {
     try {
@@ -117,8 +118,26 @@ function getOverlayChangeBall(event, matchData) {
     return overlay;
 }
 
+function isObjectEmpty(obj) {
+    if (typeof obj!=='undefined') {
+        return Object.keys(obj).length === 0 && obj.constructor === Object;
+    } else {
+        return true;
+    }
+}
 
 
+function getTypeEvent(event) {
+    let typeEvent = event?.type;
+    const state = store.getState();
+    if (event.type === 'pass' && state.event && (state.event.teamId !== event.teamId)) {
+        typeEvent = 'change_ball_team';
+    }
+    if (event?.type==='pass' && isObjectEmpty(event?.payload?.pass) && !isObjectEmpty(event?.payload?.goal)) {
+        typeEvent = 'goal';
+    }
+    return typeEvent;
+}
 
 
-export { getLogoTeam, getAllTeams, getOverlayChangeBall, getTeamLogoFromDataOrFetch };
+export { getLogoTeam, getAllTeams, getOverlayChangeBall, getTeamLogoFromDataOrFetch, getTypeEvent, isObjectEmpty };

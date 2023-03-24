@@ -93,6 +93,27 @@ const fakeEvents = [
         "goalText": ""
       }
     }
+  },
+  {
+    "type": "pass",
+    "timestamp_utc": "YYY-MM-DDTHH:MM:SSZ",
+    "playerName": "Gullit",
+    "jerseyNum": "11",
+    "teamId": "789102",
+    "x": "50",
+    "y": "0",
+    "outcome": true,
+    "payload":{
+      "pass":{},
+      "goal": {
+        "GKX" : "50",
+        "GKY" : "0",
+        "ShootY" : "12",
+        "ShootZ" : "12",
+        "playerImage": "",
+        "goalText": ""
+      }
+    }
   }
 ];
 
