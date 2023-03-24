@@ -91,13 +91,13 @@ function convertAnimationInTrailNumber(animationNumber, offset) {
 
 function getRealCoordinates(fieldWidth, fieldHeight, x_percent, y_percent) {
     // Calcola le coordinate reali basandosi sulle percentuali e le dimensioni del campo
-    let offsetX = 15; // Offset a destra e sinistra
+    let offsetX = 0; // Offset a destra e sinistra
     let offsetY = 0; // Offset in alto e basso
 
-    if (x_percent > 50) {
-        offsetX = -offsetX;
+    if (x_percent > 90) {
+        offsetX = -15;
     }
-    if (y_percent > 50) {
+    if (y_percent > 90) {
         offsetY = -15;
     }
 

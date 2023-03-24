@@ -72,7 +72,32 @@ const fakeEvents = [
   {
     "type": "pass",
     "timestamp_utc": "YYY-MM-DDTHH:MM:SSZ",
-    "playerName": "Gullit",
+    "playerName": "Del Piero",
+    "jerseyNum": "10",
+    "teamId": "789102",
+    "x": "35",
+    "y": "50",
+    "outcome": true,
+    "payload":{
+      "pass":{
+        "passType" : "head",
+        "x": "35",
+        "y": "50"
+      },
+      "goal": {
+        "GKX" : "80",
+        "GKY" : "40",
+        "ShootY" : "12",
+        "ShootZ" : "12",
+        "playerImage": "",
+        "goalText": ""
+      }
+    }
+  },
+  {
+    "type": "pass",
+    "timestamp_utc": "YYY-MM-DDTHH:MM:SSZ",
+    "playerName": "Van Basten",
     "jerseyNum": "11",
     "teamId": "789102",
     "x": "35",
@@ -81,8 +106,33 @@ const fakeEvents = [
     "payload":{
       "pass":{
         "passType" : "head",
-        "x": "44",
-        "y": "22"
+        "x": "20",
+        "y": "40"
+      },
+      "goal": {
+        "GKX" : "80",
+        "GKY" : "40",
+        "ShootY" : "12",
+        "ShootZ" : "12",
+        "playerImage": "",
+        "goalText": ""
+      }
+    }
+  },
+  {
+    "type": "pass",
+    "timestamp_utc": "YYY-MM-DDTHH:MM:SSZ",
+    "playerName": "Maradona",
+    "jerseyNum": "11",
+    "teamId": "789102",
+    "x": "20",
+    "y": "40",
+    "outcome": true,
+    "payload":{
+      "pass":{
+        "passType" : "head",
+        "x": "10",
+        "y": "30"
       },
       "goal": {
         "GKX" : "80",
@@ -100,14 +150,14 @@ const fakeEvents = [
     "playerName": "Gullit",
     "jerseyNum": "11",
     "teamId": "789102",
-    "x": "50",
-    "y": "0",
+    "x": "10",
+    "y": "30",
     "outcome": true,
     "payload":{
       "pass":{},
       "goal": {
-        "GKX" : "50",
-        "GKY" : "0",
+        "GKX" : "0",
+        "GKY" : "50",
         "ShootY" : "12",
         "ShootZ" : "12",
         "playerImage": "",
