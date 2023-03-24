@@ -274,7 +274,7 @@ function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration =
             const pointEnd = createTrailPoint(anim, newCoord);
             fadeOutTrailPoint(pointEnd);
             if (player!==null) {
-                //fadeOutPlayer(player)
+                fadeOutPlayer(player)
             }
         }
     };
