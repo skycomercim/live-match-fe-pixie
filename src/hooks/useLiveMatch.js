@@ -11,6 +11,7 @@ import {
 } from "../config";
 import logger from "../helpers/logger";
 import MatchService from "../services/MatchService";
+import useEventsDispatcher from "./useEventsDispatcher";
 
 const periodMap = {
   [MATCH_STATUS_PREMATCH]: "---",
@@ -26,14 +27,20 @@ const mainEventTypes = [
   EVENT_TYPE_RED_CARD
 ];
 
+
+const eventDispatcher = () => {
+
+}
+
 const useLiveMatch = (matchId) => {
   const [period, setPeriod] = useState(periodMap[MATCH_STATUS_PREMATCH]);
   const [score, setScore] = useState(null);
-  const [event, setEvent] = useState(null);
   const [timeline, addMainEventToTimeline] = useState([]);
 
   const eventsSubscription = useRef();
-  const history = useRef([]);
+  const eventsStoreRef = useRef([]);
+
+  const [event, addEvents] = useEventsDispatcher();
 
   useEffect(() => {
     const service = new MatchService(matchId);
@@ -51,16 +58,10 @@ const useLiveMatch = (matchId) => {
 
         if (status !== MATCH_STATUS_END) {
           logger("[useLiveMatch]", "status", status);
-          service.subEvents().subscribe(response => {
-            const { data: { onPutEventList: events }} = response; 
+          eventsSubscription = service.subEvents().subscribe(response => {
+            const { data: { onPutEventList: events } } = response;
             logger("[useLiveMatch]", "subscribe", events);
-            const event = events[0];
-            mainEventTypes.includes(event.type) &&
-              addMainEventToTimeline((state) => [...state, event]);
-            setEvent(event);
-            event.type in periodMap && setPeriod(periodMap[event.type]);
-            // TODO: come gestiamo il goal? Dove trovo lo score aggiornato, sotto payload.score o payload.match?
-            event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
+            addEvents(events);
           });
         }
 
@@ -74,9 +75,19 @@ const useLiveMatch = (matchId) => {
       catch (err) {
         logger("[useLiveMatch]", "err", err)
       }
-
     })();
   }, [matchId]);
+
+
+  useEffect(() => {
+    mainEventTypes.includes(event.type) &&
+      addMainEventToTimeline((state) => [...state, event]);
+    setEvent(event);
+    event.type in periodMap && setPeriod(periodMap[event.type]);
+    // TODO: come gestiamo il goal? Dove trovo lo score aggiornato, sotto payload.score o payload.match?
+    event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
+  }, [event])
+
   return {
     period,
     score,
