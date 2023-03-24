@@ -27,7 +27,7 @@ const useEventsDispatcher = () => {
                 setEvent(nextEvent);
                 lastEventDate.current = nextEventDate;
                 eventDispatcher();
-            }, 1000);
+            }, 2500);
         }
         else {
             timeoutId.current = setTimeout(() => {
