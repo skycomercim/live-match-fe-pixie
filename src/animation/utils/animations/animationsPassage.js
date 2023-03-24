@@ -196,7 +196,7 @@ function createPlayer(anim, event, coord) {
         circle.setAttribute('cx', centerX);
         circle.setAttribute('cy', circleDimensions);
         circle.setAttribute('r', circleRadius);
-        circle.setAttribute('fill', "#"+colorJersey);
+        circle.setAttribute('fill', colorJersey);
 
         const textNumber = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         textNumber.setAttribute('x', centerX);

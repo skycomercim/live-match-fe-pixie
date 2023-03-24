@@ -21,7 +21,7 @@ const Scoreboard = ({ matchData, score, period }) => {
                     </div>
                     <div className="container-team-info">
                         <div className="team-name">{score?.teamHome?.teamName}</div>
-                        <div className="team-score" style={{ borderBottom: `2px solid #${colorTeamHome}` }}>{score?.teamHome?.score}</div>
+                        <div className="team-score" style={{ borderBottom: `2px solid ${colorTeamHome}` }}>{score?.teamHome?.score}</div>
                     </div>
                 </div>
                 <div className="match-info">
@@ -30,7 +30,7 @@ const Scoreboard = ({ matchData, score, period }) => {
                 <div className="team away-team">
                     <div className="container-team-info">
                         <div className="team-name">{score?.teamAway?.teamName}</div>
-                        <div className="team-score" style={{ borderBottom: `2px solid #${colorTeamAway}` }}>{score?.teamAway?.score}</div>
+                        <div className="team-score" style={{ borderBottom: `2px solid ${colorTeamAway}` }}>{score?.teamAway?.score}</div>
                     </div>
                     <div className="container-team-logo">
                         <div className="team-logo">
