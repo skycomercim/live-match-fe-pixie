@@ -71,8 +71,10 @@ const generateFakeMatch = () => {
     match.status !== MATCH_STATUS_PREMATCH ? getRandomNum(0, 3) : 0;
   match.teamHome.teamPosition = 'left';
   match.teamAway.teamPosition = 'right';
-  match.teamHome.color = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-  match.teamAway.color = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+  //match.teamHome.color = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+  //match.teamAway.color = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+  match.teamHome.color = 'FFC107';
+  match.teamAway.color = '1E88E5';
 
   const getInfo = async () => Promise.resolve(match);
   const events = () => {};

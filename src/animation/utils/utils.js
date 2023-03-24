@@ -114,8 +114,15 @@ async function makeAnimation(event) {
     return response;
 }
 
+function getCorrectColorCode(color) {
+    if (!color.startsWith("#")) {
+        color = "#" + color;
+    }
+    return color;
+}
+
 
 
 export { randomCoordinatesMax500, randomCoordinatesArray,
     convertAnimationInTrailNumber, delayer, generateUniqueId, createAnimationTimeline,
-    getRealCoordinates, makeAnimation, getTeamInMatch };
+    getRealCoordinates, makeAnimation, getTeamInMatch, getCorrectColorCode };

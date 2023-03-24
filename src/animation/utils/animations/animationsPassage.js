@@ -1,7 +1,7 @@
 import anime from "animejs";
 import {
     convertAnimationInTrailNumber,
-    generateUniqueId,
+    generateUniqueId, getCorrectColorCode,
     getPositionTeamInMatch,
     getRealCoordinates,
     timeline
@@ -163,10 +163,10 @@ function createTrailPoint(anim, coord) {
 
 function getColorJersey(event) {
     const matchData = selectMatchData(store.getState());
-    const color = Object.values(matchData).find(
+    let color = Object.values(matchData).find(
         (team) => team.teamId === event.teamId
     )?.color;
-    return color;
+    return getCorrectColorCode(color);
 }
 
 function createPlayer(anim, event, coord) {
@@ -177,11 +177,12 @@ function createPlayer(anim, event, coord) {
     const svgDimensionJersey = '22';
 
     const svgDimensions = svgDimensionJersey;
-    const svgDimensionsLargeX = (parseInt(svgDimensions) + 30).toString();
+    const svgDimensionsLargeX = (parseInt(svgDimensions) + 40).toString();
     const svgDimensionsY = (parseInt(svgDimensions) + 10).toString();
     const circleDimensions = (parseInt(svgDimensions)/2).toString();
     const circleRadius = (parseInt(circleDimensions) - 2).toString();
-    const textY = (parseInt(svgDimensions) -8 ).toString();
+    const textY = (parseInt(svgDimensions) - 8 ).toString();
+    const textNameX = (parseInt(circleDimensions) + 10).toString();
     const textNameY = (parseInt(circleDimensions) + 16).toString();
 
 
@@ -218,10 +219,13 @@ function createPlayer(anim, event, coord) {
             "y",
             textNameY
         );
+        textName.setAttribute("width", textNameX);
         textName.setAttribute("text-anchor", "middle");
-        textName.setAttribute("font-size", "8");
-        textName.setAttribute("font-weight", "bold");
+        textName.setAttribute("font-size", "12");
         textName.setAttribute("fill", "white");
+        textName.setAttribute('dy', '5px');
+        textName.setAttribute('padding-left', '5px'); // Imposta il padding a sinistra
+        textName.setAttribute('padding-right', '5px'); // Imposta il padding a destra
         textName.textContent = nameJersey;
 
         svg.appendChild(circle);
@@ -258,10 +262,6 @@ function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration =
             const actualCoord = {
                 x:anim.animations[0].currentValue, y:anim.animations[1].currentValue
             }
-   /*         const player = createPlayer(anim, event, actualCoord);
-            if (player!==null) {
-                fadeOutPlayer(player)
-            }*/
         },
         complete: (anim) => {
             const pointEnd = createTrailPoint(anim, newCoord);
