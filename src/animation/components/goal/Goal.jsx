@@ -30,24 +30,22 @@ const Goal = ({ typeEvent}) => {
             loop: true
         });
 
-        // Configurazione animazione fadeOut
         const fadeOutAnimation = anime({
             targets: [imageRef.current, textRef.current],
             opacity: [1, 0],
-            duration: 1000,
-            delay: 4000, // Ritarda l'avvio dell'animazione di 4 secondi
+            duration: 2000,
+            delay: 5000, // Ritarda l'inizio dell'animazione di 5 secondi
             easing: 'easeOutQuad',
         });
 
-        // Esegui l'animazione al caricamento del componente
-        fadeInAnimation.play();
-
-        // Interrompi tutte le animazioni e rendi invisibili gli elementi dopo 5 secondi
+        // Imposta l'opacità degli elementi su 0 dopo 8 secondi
         setTimeout(() => {
             fadeInAnimation.pause();
             fadeOutAnimation.pause();
             anime.set([imageRef.current, textRef.current], { opacity: 0 });
-        }, 5000)
+        }, 6000);
+
+        fadeInAnimation.play();
 
         // Rimuovi l'animazione quando il componente viene smontato
         return () => {
