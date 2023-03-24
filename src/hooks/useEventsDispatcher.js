@@ -18,7 +18,7 @@ const useEventsDispatcher = () => {
                 setEvent(nextEvent);
                 lastEventDate.current = nextEventDate;
                 eventDispatcher();
-            }, (nextEventDate.getTime() - lastEventDate.getTime()))
+            }, (nextEventDate.getTime() - lastEventDate.current.getTime()))
         }
         else {
             timeoutId.current = setTimeout(() => {
