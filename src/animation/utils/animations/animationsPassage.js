@@ -63,7 +63,6 @@ function fadeOutTrailPoint(trailPoint) {
     anime({
         targets: trailPoint,
         duration: 900,
-        delay: 200,
         easing: 'linear',
         opacity: 0,
         complete: function(anim) {
@@ -74,7 +73,7 @@ function fadeOutTrailPoint(trailPoint) {
 
 function fadeOutPlayer(player, flagFast) {
     let duration = 1000;
-    let delay = 2000;
+    let delay = 1000;
     if (!!flagFast) {
         delay = 1000;
     }
