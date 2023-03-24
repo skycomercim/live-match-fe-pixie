@@ -248,7 +248,7 @@ function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration =
         begin: (anim) => {
             const pointStart = createTrailPoint(anim, prevCoord);
             fadeOutTrailPoint(pointStart);
-            player = createPlayer(anim, event, newCoord);
+            player = createPlayer(anim, event, prevCoord);
         },
         update: (anim) => {
             const svg = document.getElementById('soccer-svg');
