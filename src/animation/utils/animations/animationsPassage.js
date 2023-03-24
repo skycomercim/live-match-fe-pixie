@@ -181,7 +181,8 @@ function createPlayer(anim, event, coord) {
     const svgDimensionsY = (parseInt(svgDimensions) + 10).toString();
     const circleDimensions = (parseInt(svgDimensions)/2).toString();
     const circleRadius = (parseInt(circleDimensions) - 2).toString();
-    const textY = (parseInt(svgDimensions) -8 ).toString();
+    const textY = (parseInt(svgDimensions) - 8 ).toString();
+    const textNameX = (parseInt(circleDimensions) + 10).toString();
     const textNameY = (parseInt(circleDimensions) + 16).toString();
 
 
@@ -201,7 +202,7 @@ function createPlayer(anim, event, coord) {
         circle.setAttribute('cx', centerXString);
         circle.setAttribute('cy', circleDimensions);
         circle.setAttribute('r', circleRadius);
-        circle.setAttribute('fill', "#"+colorJersey);
+        circle.setAttribute('fill', colorJersey);
 
         const textNumber = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         textNumber.setAttribute('x', centerXString);
@@ -218,10 +219,13 @@ function createPlayer(anim, event, coord) {
             "y",
             textNameY
         );
+        textName.setAttribute("width", textNameX);
         textName.setAttribute("text-anchor", "middle");
-        textName.setAttribute("font-size", "8");
-        textName.setAttribute("font-weight", "bold");
+        textName.setAttribute("font-size", "12");
         textName.setAttribute("fill", "white");
+        textName.setAttribute('dy', '5px');
+        textName.setAttribute('padding-left', '5px'); // Imposta il padding a sinistra
+        textName.setAttribute('padding-right', '5px'); // Imposta il padding a destra
         textName.textContent = nameJersey;
 
         svg.appendChild(circle);
