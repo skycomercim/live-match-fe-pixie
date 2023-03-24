@@ -56,13 +56,12 @@ const LiveMatch = ({ matchId }) => {
 
   return (
     <div className="live-match">
-        <Goal typeEvent={typeEvent}></Goal>
-      <Scoreboard score={score} period={period}></Scoreboard>
-      <Field>
+      <Field className={"container-element-live-match"}>
           <Ball ref={ballRef}></Ball>
         <svg id="soccer-svg" width="400" height="250"></svg>
       </Field>
-
+        <Scoreboard score={score} period={period} className={"container-element-live-match"}></Scoreboard>
+      <Goal typeEvent={typeEvent}></Goal>
       <br/>
 
      {/* {score ? <Score score={score} /> : null}
