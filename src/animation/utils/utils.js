@@ -3,6 +3,8 @@ import {createAndDrawAndAnimationPassage, fadeInBall, fadeOutBall} from "./anima
 import {field_height, field_width} from "../../config/config";
 import {mainAnimationEgine} from "../animationEgine/animationEngine";
 import events from "../assets/fakeEvents.json";
+import store from "../store/store";
+import {getTypeEvent} from "./match/utilsMatch";
 
 
 
@@ -26,21 +28,33 @@ function generateUniqueId() {
     return 'id-' + Math.random().toString(36).substr(2, 16);
 }
 
-async function createAnimationTimeline(timeline, event) {
+async function createAnimationTimeline(event) {
     const startRealCoordinates = getRealCoordinates(field_width, field_height, event.x, event.y);
-
-    if (event.type === 'pass') {
+    const state = store.getState();
+    const eventType = getTypeEvent(event)
+    if (eventType === 'pass') {
         // opzioni di set() per posizione iniziale
-        timeline
+        anime
             .set('.ballref', {
                 translateX: startRealCoordinates.x,
                 translateY: startRealCoordinates.y,
             })
     }
-
-    const animation = mainAnimationEgine(event);
-    anime(animation);
-    await animation.finished;
+    const response = mainAnimationEgine(event);
+    if (!!response?.animation) {
+        if (Array.isArray(response?.animation)) {
+            const tl = anime.timeline({
+                autoplay: true
+            });
+            for (const anim of response?.animation) {
+                tl.add(anim);
+            }
+        } else {
+            anime(response?.animation);
+            await response?.animation.finished;
+        }
+        return response?.type
+    }
 }
 
 /*function addRandomAnimationsWithPrevCoord(ballRef, ball, prevCoord) {
@@ -99,20 +113,25 @@ function getRealCoordinates(field_width, field_height, x_percent, y_percent) {
     };
 }
 
+function getTeamInMatch(event, matchData) {
+    const teamId = event.teamId;
+    const position = matchData.teamHome.teamId === teamId
+        ? matchData.teamHome
+        : matchData.teamAway.teamId === teamId
+            ? matchData.teamAway
+            : null;
+    return position;
+}
+
+
 
 async function makeAnimation(event) {
-    const newTimeline = anime.timeline({
-        autoplay: true, // imposto autoplay a false per eseguire manualmente la timeline
-    }); // creazione di una nuova istanza di anime.timeline()
-    fadeInBall();
-    await createAnimationTimeline(newTimeline, event);
-    newTimeline.finished.then(() => {
-        //fadeOutBall();
-    })
+    const response = await createAnimationTimeline(event);
+    return response;
 }
 
 
 
 export { randomCoordinatesMax500, randomCoordinatesArray, generateRandomCoordinates,
     convertAnimationInTrailNumber, delayer, generateUniqueId, createAnimationTimeline,
-    getRealCoordinates, convertPercentCoordinates, makeAnimation };
+    getRealCoordinates, convertPercentCoordinates, makeAnimation, getTeamInMatch };

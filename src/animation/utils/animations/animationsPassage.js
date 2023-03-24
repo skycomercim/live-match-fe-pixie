@@ -1,10 +1,18 @@
 import anime from "animejs";
-import {convertAnimationInTrailNumber, generateUniqueId, getRealCoordinates, timeline} from "../utils";
+import {
+    convertAnimationInTrailNumber,
+    generateUniqueId,
+    getPositionTeamInMatch,
+    getRealCoordinates,
+    timeline
+} from "../utils";
 import {field_height, field_width} from "../../../config/config";
 import ReactDOM from "react-dom";
 import React from "react";
 import store from "../../store/store";
 import {selectMatchData} from "../../store/matchSlice";
+import logger from "../../../helpers/logger";
+import {getOverlayChangeBall} from "../match/utilsMatch";
 
 
 
@@ -45,7 +53,7 @@ function fadeOutBall() {
     anime({
         targets: '.ballref',
         easing: 'linear',
-        duration: 900,
+        duration: 400,
         opacity: 0
     });
 }
@@ -151,7 +159,7 @@ function createTrailPoint(anim, coord) {
 
 function getColorJersey(event) {
     const matchData = selectMatchData(store.getState());
-    const color = Object.values(matchData?.getMatchInfo).find(
+    const color = Object.values(matchData).find(
         (team) => team.teamId === event.teamId
     )?.color;
     return color;
@@ -224,7 +232,7 @@ function createPlayer(anim, event, coord) {
 
 
 function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration = 1000 ) {
-    let trail;
+    let trail, player;
     return{
         targets: '.ballref',
         easing: 'linear',
@@ -234,8 +242,7 @@ function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration =
         begin: (anim) => {
             const pointStart = createTrailPoint(anim, prevCoord);
             fadeOutTrailPoint(pointStart);
-            //const player = createPlayer(anim, event, prevCoord);
-            //fadeOutPlayer(player)
+            player = createPlayer(anim, event, newCoord);
         },
         update: (anim) => {
             const svg = document.getElementById('soccer-svg');
@@ -243,23 +250,76 @@ function createAndDrawAndAnimationPassage(prevCoord, newCoord, event, duration =
             // Create a new circle to represent the trail
             trail = createTrailCircle(uniqueId, anim);
             fadeOutTrailCircle(trail);
-            //trail = createTrailLine(uniqueId, newCoord, anim);
-            //createAndDrawAndAnimationPlayer(anim.animations[0].currentValue, anim.animations[1].currentValue, event?.playerName);
             const actualCoord = {
                 x:anim.animations[0].currentValue, y:anim.animations[1].currentValue
             }
-            const player = createPlayer(anim, event, actualCoord);
+   /*         const player = createPlayer(anim, event, actualCoord);
             if (player!==null) {
                 fadeOutPlayer(player)
-            }
+            }*/
         },
         complete: (anim) => {
             const pointEnd = createTrailPoint(anim, newCoord);
             fadeOutTrailPoint(pointEnd);
-            //const player = createPlayer(anim, event, newCoord);
-            //fadeOutPlayer(player);
+            if (player!==null) {
+                fadeOutPlayer(player)
+            }
         }
     };
 }
 
-export { createAndDrawAndAnimationPassage, createTrailCircle,fadeOutBall, fadeInBall };
+function createAndDrawAndAnimationChangeBallPossession(prevCoord, newCoord, event, duration = 1000 ) {
+    const arrayAnimations = [];
+    const state = store.getState();
+    const match = selectMatchData(state);
+    const matchData = match;
+    logger("matchData :: ", matchData);
+    let player;
+    arrayAnimations.push({
+        targets: '.ballref',
+        easing: 'linear',
+        translateX: newCoord.x,
+        translateY: newCoord.y,
+        duration: duration,
+        begin: (anim) => {
+            const pointStart = createTrailPoint(anim, prevCoord);
+            fadeOutTrailPoint(pointStart);
+            player = createPlayer(anim, event, newCoord);
+        },
+        update: (anim) => {
+            const pointStart = createTrailPoint(anim, prevCoord);
+            fadeOutTrailPoint(pointStart);
+        },
+        complete: (anim) => {
+            if (player!==null) {
+                fadeOutPlayer(player)
+            }
+            fadeOutBall();
+        }
+    });
+    // Crea il rettangolo grigio e imposta l'opacità a 0
+    const container = document.querySelector('.field-container');
+    const overlay = getOverlayChangeBall(event, matchData);
+    logger("overlay :: ", overlay);
+    container.appendChild(overlay);
+
+    // Animazione per mostrare il rettangolo grigio
+    arrayAnimations.push({
+        targets: overlay,
+        opacity: 1,
+        duration: 500, // durata in millisecondi
+        easing: 'easeInOutQuad' // tipo di easing
+    });
+
+    arrayAnimations.push({
+        targets: overlay,
+        opacity: 0,
+        delay: 2000,
+        duration: 700, // durata in millisecondi
+        easing: 'easeInOutQuad' // tipo di easing
+    });
+
+    return arrayAnimations;
+}
+
+export { createAndDrawAndAnimationPassage, createTrailCircle,fadeOutBall, fadeInBall, createAndDrawAndAnimationChangeBallPossession };

@@ -11,53 +11,55 @@ import { EVENT_TYPE_CELEBRATION } from "../config";
 import {useDispatch} from "react-redux";
 import {setMatchData} from "../animation/store/matchSlice";
 import matchFake from "../animation/assets/matchData.json";
-import anime from "animejs";
-import {fadeInBall, fadeOutBall} from "../animation/utils/animations/animationsPassage";
-import events from "../animation/assets/fakeEvents.json";
-import {createAnimationTimeline, makeAnimation} from "../animation/utils/utils";
+import {getPositionTeamInMatch, getRealCoordinates, makeAnimation} from "../animation/utils/utils";
 import Ball from "../animation/components/ball/ball";
 import Field from "../animation/components/field/field";
 import Scoreboard from "../animation/components/scoreboard/Scoreboard";
 import logger from "../helpers/logger";
-import {getAllTeams} from "../animation/utils/match/utilsMatch";
+import {field_height, field_width} from "../config/config";
+import Goal from "../animation/components/goal/Goal";
+import {getTypeEvent} from "../animation/utils/match/utilsMatch";
 
 const LiveMatch = ({ matchId }) => {
   const { period, score, event, timeline } = useLiveMatch(matchId);
   const [celebration, setCelebration] = useState(false);
+  const [typeEvent, setTypeEvent] = useState(null);
 
   const ballRef = useRef(null);
   const dispatch = useDispatch();
 
-
-    const [animationQueue, setAnimationQueue] = useState([]);
-
-
     useEffect( () => {
-        dispatch(setMatchData(matchFake));
-        logger("init LiveMatch");
+        console.log("score :: ", score);
+        if (score!==null) {
+            dispatch(setMatchData(score));
+            logger("init LiveMatch");
+        }
 
-/*        window.addEventListener('click', makeAnimation);
-        return () => {
-            window.removeEventListener('click', makeAnimation);
-        };*/
-    }, []);
+    }, [score]);
 
 
   useEffect(() => {
       logger("event triggered LiveMatch :: ", event);
       if (event!==null) {
-          setTimeout(() => {
-              makeAnimation(event).then(r => {
-              });
-          }, 500);
+          setTypeEvent(getTypeEvent(event));
+          // opzioni di set() per posizione iniziale
+          makeAnimation(event).then(r => {
+              /*logger("makeAnimation type :: ", r);
+              if (type==="change_ball_team") {
+                  const position = getPositionTeamInMatch(event, score);
+                  logger("makeAnimation type :: ", r);
+                  position==='left' ? setChangeBallLeft(true) : setChangeBallRight(true);
+              }*/
+          });
       }
   }, [event]);
 
   return (
     <div className="live-match">
-      <Scoreboard score={score} period={period} matchData={matchFake}></Scoreboard>
+        <Goal typeEvent={typeEvent}></Goal>
+      <Scoreboard score={score} period={period}></Scoreboard>
       <Field>
-        <Ball ref={ballRef}></Ball>
+          <Ball ref={ballRef}></Ball>
         <svg id="soccer-svg" width="400" height="250"></svg>
       </Field>
 
@@ -65,7 +67,7 @@ const LiveMatch = ({ matchId }) => {
 
      {/* {score ? <Score score={score} /> : null}
       {period ? <Period period={period} /> : null}*/}
-      {celebration ? <Celebration event={event} /> : <Court event={event} />}
+      {/*{celebration ? <Celebration event={event} /> : <Court event={event} />}*/}
       {timeline ? <Timeline timeline={timeline} /> : null}
     </div>
   );
