@@ -11,7 +11,7 @@ const useEventsDispatcher = () => {
         const events = eventsRef.current;
 
         if (events.length > 0) {
-            const nextEvent = eventsRef.current.pop();
+            const nextEvent = eventsRef.current.shift();
             const { timestamp_utc } = nextEvent;
             const nextEventDate = new Date(timestamp_utc);
             timeoutId.current = setTimeout(() => {
