@@ -1,9 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
 
-import Score from "./Score";
-import Period from "./Period";
-import Court from "./Court";
-import Celebration from "./Celebration";
 import Timeline from "./Timeline";
 
 import useLiveMatch from "../hooks/useLiveMatch";
@@ -35,22 +31,22 @@ const LiveMatch = ({ matchId }) => {
     }
   }, [score]);
 
-  useEffect(() => {
-    (async () => {
-      logger("event triggered LiveMatch :: ", event);
-      if(event) {
-        setTypeEvent(getTypeEvent(event));
-        // opzioni di set() per posizione iniziale
-        const r = await makeAnimation(event);
-        /*logger("makeAnimation type :: ", r);
-        if (type==="change_ball_team") {
-            const position = getPositionTeamInMatch(event, score);
-            logger("makeAnimation type :: ", r);
-            position==='left' ? setChangeBallLeft(true) : setChangeBallRight(true);
-        }*/
-      }
-    })();
-  }, [event]);
+    useEffect(() => {
+        (async () => {
+            logger("event triggered LiveMatch :: ", event);
+            if(event) {
+                setTypeEvent(getTypeEvent(event));
+                // opzioni di set() per posizione iniziale
+                const r = await makeAnimation(event);
+                /*logger("makeAnimation type :: ", r);
+                if (type==="change_ball_team") {
+                    const position = getPositionTeamInMatch(event, score);
+                    logger("makeAnimation type :: ", r);
+                    position==='left' ? setChangeBallLeft(true) : setChangeBallRight(true);
+                }*/
+            }
+        })();
+    }, [event]);
 
   return (
     <div className="live-match">
