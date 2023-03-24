@@ -4,6 +4,7 @@ import {field_height, field_width} from "../../config/config";
 import {mainAnimationEgine} from "../animationEgine/animationEngine";
 import events from "../assets/fakeEvents.json";
 import store from "../store/store";
+import {getTypeEvent} from "./match/utilsMatch";
 
 
 
@@ -30,7 +31,8 @@ function generateUniqueId() {
 async function createAnimationTimeline(event) {
     const startRealCoordinates = getRealCoordinates(field_width, field_height, event.x, event.y);
     const state = store.getState();
-    if (event.type === 'pass') {
+    const eventType = getTypeEvent(event)
+    if (eventType === 'pass') {
         // opzioni di set() per posizione iniziale
         anime
             .set('.ballref', {
