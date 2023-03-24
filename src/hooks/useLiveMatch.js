@@ -36,11 +36,9 @@ const useLiveMatch = (matchId) => {
   const [period, setPeriod] = useState(periodMap[MATCH_STATUS_PREMATCH]);
   const [score, setScore] = useState(null);
   const [timeline, addMainEventToTimeline] = useState([]);
-
   const eventsSubscription = useRef();
-  const eventsStoreRef = useRef([]);
 
-  const [event, addEvents] = useEventsDispatcher();
+  const { event, addEvents } = useEventsDispatcher();
 
   useEffect(() => {
     const service = new MatchService(matchId);
@@ -58,7 +56,7 @@ const useLiveMatch = (matchId) => {
 
         if (status !== MATCH_STATUS_END) {
           logger("[useLiveMatch]", "status", status);
-          eventsSubscription = service.subEvents().subscribe(response => {
+          eventsSubscription.current = service.subEvents().subscribe(response => {
             const { data: { onPutEventList: events } } = response;
             logger("[useLiveMatch]", "subscribe", events);
             addEvents(events);
@@ -80,12 +78,14 @@ const useLiveMatch = (matchId) => {
 
 
   useEffect(() => {
-    mainEventTypes.includes(event.type) &&
-      addMainEventToTimeline((state) => [...state, event]);
-    setEvent(event);
-    event.type in periodMap && setPeriod(periodMap[event.type]);
-    // TODO: come gestiamo il goal? Dove trovo lo score aggiornato, sotto payload.score o payload.match?
-    event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
+    if (event) {
+      mainEventTypes.includes(event.type) &&
+        addMainEventToTimeline((state) => [...state, event]);
+      setEvent(event);
+      event.type in periodMap && setPeriod(periodMap[event.type]);
+      // TODO: come gestiamo il goal? Dove trovo lo score aggiornato, sotto payload.score o payload.match?
+      event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
+    }
   }, [event])
 
   return {
