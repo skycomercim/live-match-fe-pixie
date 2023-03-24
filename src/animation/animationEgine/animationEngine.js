@@ -14,6 +14,7 @@ import {getTypeEvent} from "../utils/match/utilsMatch";
 function mainAnimationEgine(event) {
     let newCoord, prevCoord, animation, realPrevCoordinates, realNewCoordinates;
     let typeEvent = getTypeEvent(event);
+    logger("mainAnimationEgine - typeEvent :: ", typeEvent);
 
     switch (typeEvent) {
         case 'pass':
@@ -46,6 +47,21 @@ function mainAnimationEgine(event) {
                     type: 'change_ball_team'
                 };
                 break;
+        case 'goal':
+            logger("goal");
+            prevCoord = {x: event.x, y: event.y};
+            newCoord = {x: event.payload.goal.GKX, y: event.payload.goal.GKX};
+            realPrevCoordinates = getRealCoordinates(field_width, field_height, prevCoord.x, prevCoord.y);
+            logger("realPrevCoordinates :: ",realPrevCoordinates); // { x: 50, y: 12.5 }
+            realNewCoordinates = getRealCoordinates(field_width, field_height, newCoord.x, newCoord.y);
+            logger("realNewCoordinates :: ",realNewCoordinates); // { x: 50, y: 12.5 }
+            animation = createAndDrawAndAnimationPassage(realPrevCoordinates, realPrevCoordinates, event);
+            store.dispatch(setEvent(event));
+            return {
+                animation: animation,
+                type: 'goal'
+            };
+            break;
         default:
     }
 }

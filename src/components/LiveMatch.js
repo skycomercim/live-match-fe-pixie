@@ -41,16 +41,10 @@ const LiveMatch = ({ matchId }) => {
   useEffect(() => {
       logger("event triggered LiveMatch :: ", event);
       if (event!==null) {
+          // setta evento in redux store
           setTypeEvent(getTypeEvent(event));
-          // opzioni di set() per posizione iniziale
-          makeAnimation(event).then(r => {
-              /*logger("makeAnimation type :: ", r);
-              if (type==="change_ball_team") {
-                  const position = getPositionTeamInMatch(event, score);
-                  logger("makeAnimation type :: ", r);
-                  position==='left' ? setChangeBallLeft(true) : setChangeBallRight(true);
-              }*/
-          });
+          // richiama metodo per far partire animazione
+          makeAnimation(event).then(r => {});
       }
   }, [event]);
 

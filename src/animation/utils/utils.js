@@ -63,21 +63,6 @@ async function createAnimationTimeline(event) {
     return newCoord;
 }*/
 
-function generateRandomCoordinates(prevCoord) {
-    const maxX = 400;
-    const maxY = 300;
-
-    const xRange = Math.min(maxX, prevCoord.x + 101) - Math.max(0, prevCoord.x - 100);
-    const yRange = Math.min(maxY, prevCoord.y + 101) - Math.max(0, prevCoord.y - 100);
-
-    const x = Math.floor(Math.random() * xRange) + Math.max(0, prevCoord.x - 100);
-    const y = Math.floor(Math.random() * yRange) + Math.max(0, prevCoord.y - 100);
-
-    return {
-        x: x,
-        y: y
-    };
-}
 
 function convertAnimationInTrailNumber(animationNumber, offset) {
     const animationSPlit = animationNumber.split('px');
@@ -94,10 +79,10 @@ function getRealCoordinates(fieldWidth, fieldHeight, x_percent, y_percent) {
     let offsetX = 0; // Offset a destra e sinistra
     let offsetY = 0; // Offset in alto e basso
 
-    if (x_percent > 90) {
+    if (x_percent > 95) {
         offsetX = -15;
     }
-    if (y_percent > 90) {
+    if (y_percent > 95) {
         offsetY = -15;
     }
 
@@ -131,6 +116,6 @@ async function makeAnimation(event) {
 
 
 
-export { randomCoordinatesMax500, randomCoordinatesArray, generateRandomCoordinates,
+export { randomCoordinatesMax500, randomCoordinatesArray,
     convertAnimationInTrailNumber, delayer, generateUniqueId, createAnimationTimeline,
     getRealCoordinates, makeAnimation, getTeamInMatch };
