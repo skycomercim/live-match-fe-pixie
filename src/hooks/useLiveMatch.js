@@ -38,34 +38,43 @@ const useLiveMatch = (matchId) => {
   useEffect(() => {
     const service = new MatchService(matchId);
     (async () => {
-      const matchInfo = await service.getInfo();
-      const { status, teamHome, teamAway } = matchInfo;
+      try {
+        const matchInfo = await service.getInfo();
+        logger("[useLiveMatch]", "matchInfo", matchInfo)
+        const { status, teamHome, teamAway } = matchInfo;
 
-      setPeriod(periodMap[status]);
-      setScore({
-        teamHome,
-        teamAway
-      });
-
-      if (status !== MATCH_STATUS_END) {
-        service.subEvents((event) => {
-          logger("[useLiveMatch]", "new event from subscription", event.id);
-          logger("[useLiveMatch]", "event type", event?.type);
-          mainEventTypes.includes(event.type) &&
-            addMainEventToTimeline((state) => [...state, event]);
-          setEvent(event);
-          event.type in periodMap && setPeriod(periodMap[event.type]);
-          // TODO: come gestiamo il goal? Dove trovo lo score aggiornato, sotto payload.score o payload.match?
-          event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
+        setPeriod(periodMap[status]);
+        setScore({
+          teamHome,
+          teamAway
         });
+
+        if (status !== MATCH_STATUS_END) {
+          logger("[useLiveMatch]", "status", status);
+          service.subEvents().subscribe(response => {
+            const { data: { onPutEventList: events }} = response; 
+            logger("[useLiveMatch]", "subscribe", events);
+            const event = events[0];
+            mainEventTypes.includes(event.type) &&
+              addMainEventToTimeline((state) => [...state, event]);
+            setEvent(event);
+            event.type in periodMap && setPeriod(periodMap[event.type]);
+            // TODO: come gestiamo il goal? Dove trovo lo score aggiornato, sotto payload.score o payload.match?
+            event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
+          });
+        }
+
+        return () => {
+          logger("[useLiveMatch]", "unsubscribe");
+          if (eventsSubscription.current) {
+            eventsSubscription.current.unsubscribe();
+          }
+        };
+      }
+      catch (err) {
+        logger("[useLiveMatch]", "err", err)
       }
 
-      return () => {
-        logger("[useLiveMatch]", "unsubscribe");
-        if (eventsSubscription.current) {
-          eventsSubscription.current.unsubscribe();
-        }
-      };
     })();
   }, [matchId]);
   return {
