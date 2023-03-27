@@ -18,6 +18,7 @@ const useEventsDispatcher = () => {
 
         while (!isFulltime()) {
             const events = eventsRef.current;
+            logger('events to publish', events);
             if (events.length > 0) {
                 const nextEvent = events.shift();
                 const { timestamp_utc } = nextEvent;
@@ -25,8 +26,10 @@ const useEventsDispatcher = () => {
                 const lastEventTimestamp = lastEventDispatched.current? (new Date(lastEventDispatched.current.timestamp_utc)).getTime(): nextEventTimestamp;
                 logger('lastEventTimestamp', lastEventTimestamp)
                 let timeout = nextEventTimestamp - lastEventTimestamp;
-                yield postponeEventPublishing(nextEvent, timeout > 0 ? timeout : 2500);
-
+                logger('timeout', timeout)
+                //yield postponeEventPublishing(nextEvent, timeout > 0 ? timeout : 2500);
+                yield postponeEventPublishing(nextEvent, 2500);
+                logger('event just published', nextEvent);
             }
             else {
                 yield postponeEventPublishing({
