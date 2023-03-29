@@ -22,9 +22,9 @@ function mainAnimationEgine(event) {
                 prevCoord = {x: event.x, y: event.y};
                 newCoord = {x: event.payload.pass.x, y: event.payload.pass.y};
                 realPrevCoordinates = getRealCoordinates(field_width, field_height, prevCoord.x, prevCoord.y);
-                logger("realPrevCoordinates :: ",realPrevCoordinates); // { x: 50, y: 12.5 }
+                //logger("realPrevCoordinates :: ",realPrevCoordinates); // { x: 50, y: 12.5 }
                 realNewCoordinates = getRealCoordinates(field_width, field_height, newCoord.x, newCoord.y);
-                logger("realNewCoordinates :: ",realNewCoordinates); // { x: 50, y: 12.5 }
+                //logger("realNewCoordinates :: ",realNewCoordinates); // { x: 50, y: 12.5 }
                 animation = createAndDrawAndAnimationPassage(realPrevCoordinates, realNewCoordinates, event);
                 store.dispatch(setEvent(event));
                 return {

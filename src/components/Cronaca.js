@@ -4,9 +4,9 @@ const Cronaca = ({ cronaca }) => {
   return (
     <>
       <h5>Cronaca Testuale</h5>
-      <ul class="cronaca">
+      <ul className="cronaca">
         {cronaca.map((event) => (
-          <li key={event.id} class={`cronaca-${event.type}`}>
+          <li key={event.id} className={`cronaca-${event.type}`}>
           {event.text}
         </li>
         ))}

@@ -43,7 +43,7 @@ const Goal = ({ typeEvent}) => {
             fadeInAnimation.pause();
             fadeOutAnimation.pause();
             anime.set([imageRef.current, textRef.current], { opacity: 0 });
-        }, 6000);
+        }, 7000);
 
         fadeInAnimation.play();
 

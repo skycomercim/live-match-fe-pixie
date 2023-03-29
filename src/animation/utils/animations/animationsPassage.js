@@ -75,7 +75,7 @@ function fadeOutPlayer(player, flagFast) {
     let duration = 1000;
     let delay = 1000;
     if (!!flagFast) {
-        delay = 1000;
+        delay = 800;
     }
     const svg = document.getElementById('soccer-svg');
     anime({
@@ -201,7 +201,7 @@ function createPlayer(anim, event, coord) {
         circle.setAttribute('cx', centerXString);
         circle.setAttribute('cy', circleDimensions);
         circle.setAttribute('r', circleRadius);
-        circle.setAttribute('fill', "#"+colorJersey);
+        circle.setAttribute('fill', colorJersey);
 
         const textNumber = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         textNumber.setAttribute('x', centerXString);
