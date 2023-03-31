@@ -49,7 +49,7 @@ const LiveMatch = ({ matchId }) => {
       
       <br />
       
-      {/*cronaca ? <Cronaca cronaca={cronaca} /> : null*/}
+      {cronaca ? <Cronaca cronaca={cronaca} /> : null}
 
     </div>
   );

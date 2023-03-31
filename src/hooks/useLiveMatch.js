@@ -114,7 +114,20 @@ const useLiveMatch = (matchId) => {
       setEvent(event);
       addEventToCronaca((state) => [event, ...state]);
       event.type in periodMap && setPeriod(periodMap[event.type]);
-      // event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
+      if(event.type === EVENT_TYPE_SCORE) {
+
+        const { teamHome, teamAway } = score;
+        const newScore = {
+          teamHome: { ...teamHome },
+          teamAway: { ...teamAway }
+        }
+        logger("score", score)
+        logger("teamHome", teamHome.score);
+        logger("teamAway", teamAway.score);
+        teamHome.id === event.teamId? ++newScore.teamHome.score: ++newScore.teamAway.score;
+        setScore(newScore);
+      }
+      
     }
   }, [event])
 
