@@ -5,6 +5,8 @@ import teamsList from "../../assets/teamsSA.json";
 
 const Scoreboard = ({ score, period }) => {
     const [match, setMatch] = React.useState(score);
+    const teamHomeColor = '#FF0000';
+    const teamAwayColor = '#FFFDD0';
     useEffect(() => {
         setMatch(score);
         /*const colorTeamHome = match?.teamHome?.color;
@@ -24,7 +26,7 @@ const Scoreboard = ({ score, period }) => {
                     </div>
                     <div className="container-team-info">
                         <div className="team-name">{score?.teamHome?.teamName}</div>
-                        <div className="team-score" style={{ borderBottom: `2px solid ${match?.teamHome?.color}` }}>{score?.teamHome?.score}</div>
+                        <div className="team-score" style={{ borderBottom: `2px solid ${teamHomeColor}` }}>{score?.teamHome?.score}</div>
                     </div>
                 </div>
                 <div className="match-info">
@@ -33,7 +35,7 @@ const Scoreboard = ({ score, period }) => {
                 <div className="team away-team">
                     <div className="container-team-info">
                         <div className="team-name">{score?.teamAway?.teamName}</div>
-                        <div className="team-score" style={{ borderBottom: `2px solid ${match?.teamAway?.color}` }}>{score?.teamAway?.score}</div>
+                        <div className="team-score" style={{ borderBottom: `2px solid ${teamAwayColor}` }}>{score?.teamAway?.score}</div>
                     </div>
                     <div className="container-team-logo">
                         <div className="team-logo">

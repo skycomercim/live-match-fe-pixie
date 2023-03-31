@@ -39,12 +39,6 @@ const LiveMatch = ({ matchId }) => {
         setTypeEvent(getTypeEvent(event));
         // opzioni di set() per posizione iniziale
         const r = await makeAnimation(event);
-        /*logger("makeAnimation type :: ", r);
-        if (type==="change_ball_team") {
-            const position = getPositionTeamInMatch(event, score);
-            logger("makeAnimation type :: ", r);
-            position==='left' ? setChangeBallLeft(true) : setChangeBallRight(true);
-        }*/
       }
     })();
   }, [event]);
