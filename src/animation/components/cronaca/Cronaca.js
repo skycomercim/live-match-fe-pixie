@@ -89,13 +89,6 @@ const Cronaca = ({ cronaca }) => {
                     </li>
                 ))}
             </ul>
-            <button onClick={() => handleAddEvent({
-                id: cronacaEvents.length + 1,
-                type: "new",
-                text: "Nuovo evento",
-                timestamp: Date.now(),
-                isRemoved: false
-            })}>Aggiungi evento</button>
         </>
     );
 };
