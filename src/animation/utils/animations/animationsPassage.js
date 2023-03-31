@@ -215,7 +215,11 @@ function createPlayer(anim, event, coord) {
         textNumber.setAttribute('text-anchor', 'middle');
         textNumber.setAttribute('font-size', '10');
         textNumber.setAttribute('font-weight', 'bold');
-        textNumber.setAttribute('fill', 'white');
+        if (event?.teamId === "2174") {
+            textNumber.setAttribute('fill', 'white');
+        } else {
+            textNumber.setAttribute('fill', 'black');
+        }
         textNumber.textContent = numberJersey;
 
         const textName = document.createElementNS('http://www.w3.org/2000/svg', 'text');
