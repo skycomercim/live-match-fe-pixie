@@ -26,6 +26,10 @@ const mainEventTypes = [
   EVENT_TYPE_RED_CARD
 ];
 
+const WAITING_FOR_DATA = 'WAITING_FOR_DATA';
+
+const postponeEventPublishing = (event, timeout) => new Promise((res) => setTimeout(() => res(event), timeout));
+
 const useLiveMatch = (matchId) => {
   const [event, setEvent] = useState();
   const [period, setPeriod] = useState(periodMap[MATCH_STATUS_PREMATCH]);
@@ -33,44 +37,46 @@ const useLiveMatch = (matchId) => {
   const [cronaca, addEventToCronaca] = useState([]);
 
   const eventsRef = useRef([]);
-  const lastEventDate = useRef();
-  const timeoutId = useRef();
+  const isFulltimeRef = useRef(false);
+  const lastEventDispatched = useRef();
 
-  const eventDispatcher = () => {
-    const events = eventsRef.current;
+  const isFulltime = () => isFulltimeRef.current;
 
-    if (events.length > 0) {
-      const nextEvent = events.shift();
-      const { timestamp_utc } = nextEvent;
-      const nextEventDate = new Date(timestamp_utc);
+  const eventDispatcher = async function* () {
 
-      let timeout = lastEventDate.current ? nextEventDate.getTime() - lastEventDate.current.getTime() : 0;
-
-      logger('[useEventsDispatcher]', 'lastEventDate', lastEventDate.current);
-      logger('[useEventsDispatcher]', 'nextEventDate', nextEventDate);
-      logger('[useEventsDispatcher]', 'timeout', timeout);
-
-      timeoutId.current = setTimeout(() => {
-        logger('[useEventsDispatcher]', 'next event', nextEvent)
-        setEvent(nextEvent);
-        lastEventDate.current = nextEventDate;
-        eventDispatcher();
-      }, 2500);
-    }
-    else {
-      timeoutId.current = setTimeout(() => {
-        logger('[useEventsDispatcher]', 'check', eventsRef.current?.length);
-        eventDispatcher();
-      }, 200);
+    while (!isFulltime()) {
+      const events = eventsRef.current;
+      logger('events to publish', events);
+      if (events.length > 0) {
+        const nextEvent = events.shift();
+        const { timestamp_utc } = nextEvent;
+        const nextEventTimestamp = new Date(timestamp_utc);
+        const lastEventTimestamp = lastEventDispatched.current ? (new Date(lastEventDispatched.current.timestamp_utc)).getTime() : nextEventTimestamp;
+        logger('lastEventTimestamp', lastEventTimestamp)
+        let timeout = nextEventTimestamp - lastEventTimestamp;
+        logger('timeout', timeout)
+        //yield postponeEventPublishing(nextEvent, timeout > 0 ? timeout : 2500);
+        yield postponeEventPublishing(nextEvent, 2500);
+        logger('event just published', nextEvent);
+      }
+      else {
+        yield postponeEventPublishing({
+          type: WAITING_FOR_DATA
+        }, 1000);
+      }
     }
 
-    return () => {
-      clearTimeout(timeoutId.current);
-    }
   }
-
   useEffect(() => {
-    eventDispatcher();
+    (async () => {
+      for await (const eventDispatched of eventDispatcher()) {
+        logger('event', eventDispatched)
+        if (eventDispatched.type !== WAITING_FOR_DATA) {
+          setEvent(eventDispatched);
+          lastEventDispatched.current = eventDispatched;
+        }
+      }
+    })()
   }, [])
 
   useEffect(() => {
