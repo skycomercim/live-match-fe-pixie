@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 
-import Timeline from "./Timeline";
-import Cronaca from "./Cronaca";
+import Cronaca from "../animation/components/cronaca/Cronaca";
 
 import useLiveMatch from "../hooks/useLiveMatch";
 import { useDispatch } from "react-redux";
