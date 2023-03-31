@@ -4,7 +4,7 @@ const Cronaca = ({ cronaca }) => {
     return (
         <>
             <h5>Cronaca Testuale</h5>
-            <ul className="cronaca">
+            <ul className="cronaca" style={{maxHeight: '210px', overflow: 'hidden'}}>
                 {cronaca.map((event) => (
                     <li key={event.id} className={`cronaca-${event.type}`}>
                         {event.text}
