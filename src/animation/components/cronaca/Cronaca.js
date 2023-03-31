@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import './cronaca.css';
+
 const Cronaca = ({ cronaca }) => {
     const [cronacaEvents, setCronacaEvents] = useState([]);
     const [isNewEvent, setIsNewEvent] = useState(false);

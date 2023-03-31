@@ -11,7 +11,6 @@ import {
 } from "../config";
 import logger from "../helpers/logger";
 import MatchService from "../services/MatchService";
-import useEventsDispatcher from "./useEventsDispatcher";
 
 const periodMap = {
   [MATCH_STATUS_PREMATCH]: "---",
@@ -27,21 +26,52 @@ const mainEventTypes = [
   EVENT_TYPE_RED_CARD
 ];
 
-
-const eventDispatcher = () => {
-
-}
-
 const useLiveMatch = (matchId) => {
+  const [event, setEvent] = useState();
   const [period, setPeriod] = useState(periodMap[MATCH_STATUS_PREMATCH]);
   const [score, setScore] = useState(null);
-  const [timeline, addMainEventToTimeline] = useState([]);
-  const [cronaca, addEventToCronaca] =  useState([]);
-  const eventsSubscription = useRef();
+  const [cronaca, addEventToCronaca] = useState([]);
 
-  const [nextEvent, setNextEvent] = useState();
+  const eventsRef = useRef([]);
+  const lastEventDate = useRef();
+  const timeoutId = useRef();
 
-  const { event, addEvents } = useEventsDispatcher();
+  const eventDispatcher = () => {
+    const events = eventsRef.current;
+
+    if (events.length > 0) {
+      const nextEvent = events.shift();
+      const { timestamp_utc } = nextEvent;
+      const nextEventDate = new Date(timestamp_utc);
+
+      let timeout = lastEventDate.current ? nextEventDate.getTime() - lastEventDate.current.getTime() : 0;
+
+      logger('[useEventsDispatcher]', 'lastEventDate', lastEventDate.current);
+      logger('[useEventsDispatcher]', 'nextEventDate', nextEventDate);
+      logger('[useEventsDispatcher]', 'timeout', timeout);
+
+      timeoutId.current = setTimeout(() => {
+        logger('[useEventsDispatcher]', 'next event', nextEvent)
+        setEvent(nextEvent);
+        lastEventDate.current = nextEventDate;
+        eventDispatcher();
+      }, 2500);
+    }
+    else {
+      timeoutId.current = setTimeout(() => {
+        logger('[useEventsDispatcher]', 'check', eventsRef.current?.length);
+        eventDispatcher();
+      }, 200);
+    }
+
+    return () => {
+      clearTimeout(timeoutId.current);
+    }
+  }
+
+  useEffect(() => {
+    eventDispatcher();
+  }, [])
 
   useEffect(() => {
     const service = new MatchService(matchId);
@@ -58,20 +88,10 @@ const useLiveMatch = (matchId) => {
         });
 
         if (status !== MATCH_STATUS_END) {
-          logger("[useLiveMatch]", "status", status);
-          eventsSubscription.current = service.subEvents().subscribe(response => {
-            const { data: { onPutEventList: events } } = response;
-            logger("[useLiveMatch]", "subscribe", events);
-            addEvents(events);
-          });
+          service.subEvents(events => eventsRef.current.push(...events));
         }
 
-        return () => {
-          logger("[useLiveMatch]", "unsubscribe");
-          if (eventsSubscription.current) {
-            eventsSubscription.current.unsubscribe();
-          }
-        };
+        return () => service.unsubEvents();
       }
       catch (err) {
         logger("[useLiveMatch]", "err", err)
@@ -79,15 +99,11 @@ const useLiveMatch = (matchId) => {
     })();
   }, [matchId]);
 
-
   useEffect(() => {
     if (event) {
-      mainEventTypes.includes(event.type) &&
-        addMainEventToTimeline((state) => [...state, event]);
-        setNextEvent(event);
-      addEventToCronaca((state) => [event, ...state ]);
+      setEvent(event);
+      addEventToCronaca((state) => [event, ...state]);
       event.type in periodMap && setPeriod(periodMap[event.type]);
-      // TODO: come gestiamo il goal? Dove trovo lo score aggiornato, sotto payload.score o payload.match?
       event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
     }
   }, [event])
@@ -95,9 +111,8 @@ const useLiveMatch = (matchId) => {
   return {
     period,
     score,
-    event: nextEvent,
+    event,
     cronaca,
-    timeline
   };
 };
 

@@ -3,12 +3,10 @@ import { MATCHSERVICE_ENDPOINT, MATCHSERVICE_REALTIME, MATCHSERVICE_TOKEN } from
 import { matchInfoQuery } from './graphql/queries';
 import { MatchEventsSubscription } from './graphql/subscriptions';
 
-import { Subject } from "rxjs";
-
-import logger from "../helpers/logger";
-
 class MatchService {
   #matchId;
+  #eventsCallback = [];
+  #subscription;
   constructor(matchId) {
     this.#matchId = matchId;
     this.amplisky = new Amplisky({
@@ -29,8 +27,21 @@ class MatchService {
     return getMatchInfo;
   }
 
-  subEvents() {
-    return this.amplisky.subscription(MatchEventsSubscription/*, { matchId: this.#matchId }*/)
+  subEvents(callback) {
+    this.#eventsCallback.push(callback);
+    if(!this.#subscription) {
+      this.#subscription = this
+        .amplisky
+        .subscription(MatchEventsSubscription, { matchId: this.#matchId })
+        .subscribe(response => {
+        const { data: { onPutEventList: events } } = response;
+        this.#eventsCallback.forEach(callback => callback(events));
+      });
+    }
+  }
+
+  unsubEvents() {
+    this.#subscription && this.#subscription.unsubscribe();
   }
 }
 
