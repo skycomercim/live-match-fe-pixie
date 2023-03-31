@@ -21,9 +21,7 @@ const LiveMatch = ({ matchId }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!!score) {
-      dispatch(setMatchData(score));
-    }
+    score && dispatch(setMatchData(score));
   }, [score]);
 
   useEffect(() => {
