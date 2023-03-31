@@ -11,7 +11,6 @@ import {
 } from "../config";
 import logger from "../helpers/logger";
 import MatchService from "../services/MatchService";
-import useEventsDispatcher from "./useEventsDispatcher";
 
 const periodMap = {
   [MATCH_STATUS_PREMATCH]: "---",
@@ -27,21 +26,59 @@ const mainEventTypes = [
   EVENT_TYPE_RED_CARD
 ];
 
+const WAITING_FOR_DATA = 'WAITING_FOR_DATA';
 
-const eventDispatcher = () => {
-
-}
+const postponeEventPublishing = (event, timeout) => new Promise((res) => setTimeout(() => res(event), timeout));
 
 const useLiveMatch = (matchId) => {
+  const [event, setEvent] = useState();
   const [period, setPeriod] = useState(periodMap[MATCH_STATUS_PREMATCH]);
   const [score, setScore] = useState(null);
-  const [timeline, addMainEventToTimeline] = useState([]);
-  const [cronaca, addEventToCronaca] =  useState([]);
-  const eventsSubscription = useRef();
+  const [cronaca, addEventToCronaca] = useState([]);
 
-  const [nextEvent, setNextEvent] = useState();
+  const eventsRef = useRef([]);
+  const isFulltimeRef = useRef(false);
+  const lastEventDispatched = useRef();
 
-  const { event, addEvents } = useEventsDispatcher();
+  const isFulltime = () => isFulltimeRef.current;
+
+  const eventDispatcher = async function* () {
+
+    while (!isFulltime()) {
+      const events = eventsRef.current;
+      logger('events to publish', events);
+      if (events.length > 0) {
+        const nextEvent = events.shift();
+        const { timestamp_utc } = nextEvent;
+        const nextEventTimestamp = new Date(timestamp_utc);
+        const lastEventTimestamp = lastEventDispatched.current ? (new Date(lastEventDispatched.current.timestamp_utc)).getTime() : nextEventTimestamp;
+        logger('lastEventTimestamp', lastEventTimestamp)
+        let timeout = nextEventTimestamp - lastEventTimestamp;
+        logger('timeout', timeout)
+        //yield postponeEventPublishing(nextEvent, timeout > 0 ? timeout : 2500);
+        yield postponeEventPublishing(nextEvent, 2500);
+        logger('event just published', nextEvent);
+      }
+      else {
+        yield postponeEventPublishing({
+          type: WAITING_FOR_DATA
+        }, 1000);
+      }
+    }
+
+  }
+  useEffect(() => {
+    (async () => {
+      for await (const eventDispatched of eventDispatcher()) {
+        logger('event', eventDispatched)
+        if (eventDispatched.type !== WAITING_FOR_DATA) {
+          setEvent(eventDispatched);
+          lastEventDispatched.current = eventDispatched;
+          eventDispatched.type === MATCH_STATUS_END && (isFulltimeRef.current = true);
+        }
+      }
+    })()
+  }, [])
 
   useEffect(() => {
     const service = new MatchService(matchId);
@@ -58,20 +95,13 @@ const useLiveMatch = (matchId) => {
         });
 
         if (status !== MATCH_STATUS_END) {
-          logger("[useLiveMatch]", "status", status);
-          eventsSubscription.current = service.subEvents().subscribe(response => {
-            const { data: { onPutEventList: events } } = response;
-            logger("[useLiveMatch]", "subscribe", events);
-            addEvents(events);
-          });
+          service.subEvents(events => eventsRef.current.push(...events));
+        }
+        else {
+          isFulltimeRef.current = true;
         }
 
-        return () => {
-          logger("[useLiveMatch]", "unsubscribe");
-          if (eventsSubscription.current) {
-            eventsSubscription.current.unsubscribe();
-          }
-        };
+        return () => service.unsubEvents();
       }
       catch (err) {
         logger("[useLiveMatch]", "err", err)
@@ -79,25 +109,33 @@ const useLiveMatch = (matchId) => {
     })();
   }, [matchId]);
 
-
   useEffect(() => {
     if (event) {
-      mainEventTypes.includes(event.type) &&
-        addMainEventToTimeline((state) => [...state, event]);
-        setNextEvent(event);
-      addEventToCronaca((state) => [event, ...state ]);
+      setEvent(event);
+      addEventToCronaca((state) => [event, ...state]);
       event.type in periodMap && setPeriod(periodMap[event.type]);
-      // TODO: come gestiamo il goal? Dove trovo lo score aggiornato, sotto payload.score o payload.match?
-      event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
+      if(event.type === EVENT_TYPE_SCORE) {
+
+        const { teamHome, teamAway } = score;
+        const newScore = {
+          teamHome: { ...teamHome },
+          teamAway: { ...teamAway }
+        }
+        logger("score", score)
+        logger("teamHome", teamHome.score);
+        logger("teamAway", teamAway.score);
+        teamHome.id === event.teamId? ++newScore.teamHome.score: ++newScore.teamAway.score;
+        setScore(newScore);
+      }
+      
     }
   }, [event])
 
   return {
     period,
     score,
-    event: nextEvent,
+    event,
     cronaca,
-    timeline
   };
 };
 

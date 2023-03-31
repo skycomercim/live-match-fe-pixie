@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Cronaca from "../animation/components/cronaca/Cronaca";
 
@@ -14,19 +14,14 @@ import Goal from "../animation/components/goal/Goal";
 import { getTypeEvent } from "../animation/utils/match/utilsMatch";
 
 const LiveMatch = ({ matchId }) => {
-  const { period, score, event, cronaca, timeline } = useLiveMatch(matchId);
-  const [celebration, setCelebration] = useState(false);
+  const { period, score, event, cronaca } = useLiveMatch(matchId);
   const [typeEvent, setTypeEvent] = useState(null);
-  const [scoreData, setScoreData] = useState(score);
 
-    const ballRef = useRef(null);
-    const dispatch = useDispatch();
+  const ballRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    logger("LiveMatch score :: ", score);
-    if (typeof score!=='undefined' && score!==undefined) {
-      logger("LiveMatch enter for setting score to redux");
-      setScoreData(score);
+    if (!!score) {
       dispatch(setMatchData(score));
     }
   }, [score]);
@@ -34,10 +29,9 @@ const LiveMatch = ({ matchId }) => {
   useEffect(() => {
     (async () => {
       logger("event triggered LiveMatch :: ", event);
-      if(event) {
+      if (event) {
         setTypeEvent(getTypeEvent(event));
-        // opzioni di set() per posizione iniziale
-        const r = await makeAnimation(event);
+        await makeAnimation(event);
       }
     })();
   }, [event]);
@@ -45,22 +39,20 @@ const LiveMatch = ({ matchId }) => {
   return (
     <div className="live-match">
       <Field className={"container-element-live-match"}>
-          <Ball ref={ballRef}></Ball>
+        <Ball ref={ballRef}></Ball>
         <svg id="soccer-svg" width="400" height="250"></svg>
       </Field>
-        <Scoreboard score={scoreData} period={period} className={"container-element-live-match"}></Scoreboard>
+      
+      { score ? <Scoreboard score={score} period={period} className={"container-element-live-match"} />: null}
+      
       <Goal typeEvent={typeEvent}></Goal>
-      <br/>
+      
+      <br />
+      
+      {cronaca ? <Cronaca cronaca={cronaca} /> : null}
 
-     {/* {score ? <Score score={score} /> : null}
-      {period ? <Period period={period} /> : null}*/}
-            {/*{celebration ? <Celebration event={event} /> : <Court event={event} />}*/}
-            
-            {cronaca ? <Cronaca cronaca={cronaca} /> : null}
-            {/*timeline ? <Timeline timeline={timeline} /> : null*/}
-            
-        </div>
-    );
+    </div>
+  );
 };
 
 export default LiveMatch;
