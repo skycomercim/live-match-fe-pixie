@@ -1,4 +1,5 @@
 import React from "react";
+import {generateUniqueId} from "../../utils/utils";
 
 const Cronaca = ({ cronaca }) => {
     return (
@@ -6,7 +7,7 @@ const Cronaca = ({ cronaca }) => {
             <h5>Cronaca Testuale</h5>
             <ul className="cronaca" style={{maxHeight: '210px', overflow: 'hidden'}}>
                 {cronaca.map((event) => (
-                    <li key={event.id} className={`cronaca-${event.type}`}>
+                    <li key={generateUniqueId()} className={`cronaca-${event.type}`}>
                         {event.text}
                     </li>
                 ))}
