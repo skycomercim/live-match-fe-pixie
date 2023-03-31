@@ -16,14 +16,12 @@ import { getTypeEvent } from "../animation/utils/match/utilsMatch";
 const LiveMatch = ({ matchId }) => {
   const { period, score, event, cronaca } = useLiveMatch(matchId);
   const [typeEvent, setTypeEvent] = useState(null);
-  const [scoreData, setScoreData] = useState(score);
 
   const ballRef = useRef(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!!score) {
-      setScoreData(score);
       dispatch(setMatchData(score));
     }
   }, [score]);
@@ -45,7 +43,7 @@ const LiveMatch = ({ matchId }) => {
         <svg id="soccer-svg" width="400" height="250"></svg>
       </Field>
       
-      { score ? <Scoreboard score={score} period={period} className={"container-element-live-match"}></Scoreboard>: null}
+      { score ? <Scoreboard score={score} period={period} className={"container-element-live-match"} />: null}
       
       <Goal typeEvent={typeEvent}></Goal>
       

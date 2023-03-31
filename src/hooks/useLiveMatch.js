@@ -74,6 +74,7 @@ const useLiveMatch = (matchId) => {
         if (eventDispatched.type !== WAITING_FOR_DATA) {
           setEvent(eventDispatched);
           lastEventDispatched.current = eventDispatched;
+          eventDispatched.type === MATCH_STATUS_END && (isFulltimeRef.current = true);
         }
       }
     })()
@@ -96,6 +97,9 @@ const useLiveMatch = (matchId) => {
         if (status !== MATCH_STATUS_END) {
           service.subEvents(events => eventsRef.current.push(...events));
         }
+        else {
+          isFulltimeRef.current = true;
+        }
 
         return () => service.unsubEvents();
       }
@@ -110,7 +114,7 @@ const useLiveMatch = (matchId) => {
       setEvent(event);
       addEventToCronaca((state) => [event, ...state]);
       event.type in periodMap && setPeriod(periodMap[event.type]);
-      event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
+      // event.type === EVENT_TYPE_SCORE && setScore(event.payload.score);
     }
   }, [event])
 
