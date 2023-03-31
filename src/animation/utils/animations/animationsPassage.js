@@ -14,7 +14,8 @@ import {selectMatchData} from "../../store/matchSlice";
 import logger from "../../../helpers/logger";
 import {getOverlayChangeBall} from "../match/utilsMatch";
 
-
+const teamHomeColor = '#FF0000';
+const teamAwayColor = '#FFFDD0';
 
 function pulseElement(element) {
     anime({
@@ -163,9 +164,14 @@ function createTrailPoint(anim, coord) {
 
 function getColorJersey(event) {
     const matchData = selectMatchData(store.getState());
-    const color = Object.values(matchData).find(
+    let color = Object.values(matchData).find(
         (team) => team.teamId === event.teamId
     )?.color;
+    if (event?.teamId === "2174") {
+        color = teamHomeColor;
+    } else {
+        color = teamAwayColor
+    }
     return color;
 }
 
