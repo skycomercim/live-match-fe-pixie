@@ -28,7 +28,7 @@ const mainEventTypes = [
 
 const WAITING_FOR_DATA = 'WAITING_FOR_DATA';
 
-const postponeEventPublishing = (event, timeout) => new Promise((res) => setTimeout(() => res(event), timeout));
+const deferEventPublishing = (event, timeout) => new Promise((res) => setTimeout(() => res(event), timeout));
 
 const useLiveMatch = (matchId) => {
   const [event, setEvent] = useState();
@@ -41,6 +41,16 @@ const useLiveMatch = (matchId) => {
   const lastEventDispatched = useRef();
 
   const isFulltime = () => isFulltimeRef.current;
+
+  const updateScore = (score) => {
+    const { teamHome, teamAway } = score;
+    const newScore = {
+      teamHome: { ...teamHome },
+      teamAway: { ...teamAway }
+    }
+    teamHome.id === event.teamId ? ++newScore.teamHome.score : ++newScore.teamAway.score;
+    setScore(newScore);
+  }
 
   const eventDispatcher = async function* () {
 
@@ -56,17 +66,17 @@ const useLiveMatch = (matchId) => {
         let timeout = nextEventTimestamp - lastEventTimestamp;
         logger('timeout', timeout)
         //yield postponeEventPublishing(nextEvent, timeout > 0 ? timeout : 2500);
-        yield postponeEventPublishing(nextEvent, 2500);
+        yield deferEventPublishing(nextEvent, 2500);
         logger('event just published', nextEvent);
       }
       else {
-        yield postponeEventPublishing({
+        yield deferEventPublishing({
           type: WAITING_FOR_DATA
         }, 1000);
       }
     }
-
   }
+  
   useEffect(() => {
     (async () => {
       for await (const eventDispatched of eventDispatcher()) {
@@ -94,13 +104,7 @@ const useLiveMatch = (matchId) => {
           teamAway
         });
 
-        if (status !== MATCH_STATUS_END) {
-          service.subEvents(events => eventsRef.current.push(...events));
-        }
-        else {
-          isFulltimeRef.current = true;
-        }
-
+        status !== MATCH_STATUS_END? service.subEvents(events => eventsRef.current.push(...events)): isFulltimeRef.current = true;
         return () => service.unsubEvents();
       }
       catch (err) {
@@ -114,20 +118,7 @@ const useLiveMatch = (matchId) => {
       setEvent(event);
       addEventToCronaca((state) => [event, ...state]);
       event.type in periodMap && setPeriod(periodMap[event.type]);
-      if(event.type === EVENT_TYPE_SCORE) {
-
-        const { teamHome, teamAway } = score;
-        const newScore = {
-          teamHome: { ...teamHome },
-          teamAway: { ...teamAway }
-        }
-        logger("score", score)
-        logger("teamHome", teamHome.score);
-        logger("teamAway", teamAway.score);
-        teamHome.id === event.teamId? ++newScore.teamHome.score: ++newScore.teamAway.score;
-        setScore(newScore);
-      }
-      
+      event.type === EVENT_TYPE_SCORE && updateScore(score);
     }
   }, [event])
 
