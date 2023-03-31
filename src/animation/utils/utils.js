@@ -114,8 +114,55 @@ async function makeAnimation(event) {
     return response;
 }
 
+function isColorDark(color) {
+    // Converte il colore in formato esadecimale in formato RGB
+    var rgb = hexToRgb(color);
+
+    // Calcola la luminosità utilizzando la formula HSL
+    var hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+    var lightness = hsl.l * 100;
+
+    // Determina se il colore è chiaro o scuro
+    if (lightness < 50) {
+        return true; // il colore è scuro
+    } else {
+        return false; // il colore è chiaro
+    }
+}
+
+// Converte un colore esadecimale in un oggetto RGB
+function hexToRgb(hex) {
+    var r = parseInt(hex.substring(0,2), 16);
+    var g = parseInt(hex.substring(2,4), 16);
+    var b = parseInt(hex.substring(4,6), 16);
+    return {r, g, b};
+}
+
+// Converte un colore RGB in un oggetto HSL
+function rgbToHsl(r, g, b) {
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if (max == min){
+        h = s = 0; // scala di grigi
+    } else {
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max){
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    return { h, s, l };
+}
+
+
 
 
 export { randomCoordinatesMax500, randomCoordinatesArray,
     convertAnimationInTrailNumber, delayer, generateUniqueId, createAnimationTimeline,
-    getRealCoordinates, makeAnimation, getTeamInMatch };
+    getRealCoordinates, makeAnimation, getTeamInMatch, isColorDark };

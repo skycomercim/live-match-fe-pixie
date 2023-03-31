@@ -3,7 +3,7 @@ import {
     convertAnimationInTrailNumber,
     generateUniqueId,
     getPositionTeamInMatch,
-    getRealCoordinates,
+    getRealCoordinates, isColorDark,
     timeline
 } from "../utils";
 import {durationAnimationFast, durationAnimationStandard, field_height, field_width} from "../../../config/config";
@@ -164,10 +164,14 @@ function createTrailPoint(anim, coord) {
 
 function getColorJersey(event) {
     const matchData = selectMatchData(store.getState());
+    let team = Object.values(matchData).find(
+        (team) => team.teamId === event.teamId
+    );
+    console.log("getColorJersey TEAM :: ", team);
     let color = Object.values(matchData).find(
         (team) => team.teamId === event.teamId
     )?.color;
-    if (event?.teamId === "2174") {
+    if (event?.teamId === "135") {
         color = teamHomeColor;
     } else {
         color = teamAwayColor
@@ -215,7 +219,8 @@ function createPlayer(anim, event, coord) {
         textNumber.setAttribute('text-anchor', 'middle');
         textNumber.setAttribute('font-size', '10');
         textNumber.setAttribute('font-weight', 'bold');
-        if (event?.teamId === "2174") {
+        // 2174 cremonese
+        if (isColorDark("#"+colorJersey)) {
             textNumber.setAttribute('fill', 'white');
         } else {
             textNumber.setAttribute('fill', 'black');
